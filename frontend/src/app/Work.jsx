@@ -2,17 +2,25 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api.js";
 import { can, useAuth } from "../auth.jsx";
+import { LivePill, ago, useLiveReload, useNow } from "../live.jsx";
 import { Bars, Empty, ErrorBox, Explanation, HBars, Loading, RiskBadge, ScoreBar, Tiles, fmtMinutes, score3, useLoad } from "../ui.jsx";
 import { PageHead } from "./Shell.jsx";
 
 export function Dashboard() {
-  const { me } = useAuth(); const d = useLoad(() => api("/api/dashboard"), [me.org?.id]);
+  const { me } = useAuth(); const d = useLoad(() => api("/api/dashboard"), [me.org?.id]); const now = useNow(10000);
+  useLiveReload(["message", "alert", "alert_update", "connector"], d.reload, () => true, 1500);
   if (d.loading && !d.data) return <Loading />;
-  if (d.error) return <ErrorBox error={d.error} />;
-  const x = d.data;
+  if (d.error && !d.data) return <ErrorBox error={d.error} />;
+  const x = d.data; const src = x.sources || {}; const nSrc = Object.values(src).reduce((a, b) => a + b, 0);
+  const reading = (src.live || 0) + (src.polling || 0);
   return (
     <>
-      <PageHead title="Dashboard" actions={can(me, "analyst") && <Link className="btn primary" to="/app/scan">Scan a message</Link>}>{x.org}: the last 30 days.</PageHead>
+      <PageHead title="Dashboard" actions={<Link className="btn primary" to="/app/live">Open the live feed</Link>}>{x.org}: the last 30 days. It updates by itself as messages arrive.</PageHead>
+      <div className="card row" style={{ marginBottom: 16, justifyContent: "space-between" }}>
+        <span className="row"><LivePill /><span>Last message {ago(x.last_message_at, now)} · {x.messages_last_hour} in the last hour</span></span>
+        <span className="small">{nSrc ? <>{reading} of {nSrc} connector(s) reading{src.error ? <>, <strong className="text-danger">{src.error} with a problem</strong></> : ""}</>
+          : can(me, "admin") ? <Link to="/app/connectors">Connect a mailbox so messages arrive by themselves</Link> : "No mailbox connected yet"}</span>
+      </div>
       <Tiles items={[["Messages checked, 7 days", x.messages_checked_7d], ["Messages checked, 30 days", x.messages_checked_30d], ["Open alerts", x.alerts_open],
         ["Alerts, 30 days", x.alerts_30d], ["Active campaigns", x.active_campaigns]]} />
       <div className="grid two" style={{ marginTop: 16 }}>
@@ -49,7 +57,8 @@ export function Scan() {
   const r = state.result;
   return (
     <>
-      <PageHead title="Scan a message">One email, SMS or link, scored by its detector. Nothing you paste is stored.</PageHead>
+      <PageHead title="Scan a message">One email, SMS or link, scored by its detector, for a quick check by hand. Nothing you paste is stored.
+        Messages from connected mailboxes and gateways are scored by themselves: see the <Link to="/app/live">Live feed</Link>.</PageHead>
       <div className="grid two">
         <form className="card" onSubmit={run}>
           <div className="row" role="tablist" aria-label="Channel" style={{ marginBottom: 12 }}>

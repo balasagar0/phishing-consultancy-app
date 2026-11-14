@@ -1,54 +1,17 @@
-"""Mail connector: reads a "report phishing" mailbox over IMAP and sends each reported message to the service with an API key.
+"""Stand-alone mail connector, for a mailbox the server cannot reach (for example one inside the client's own network): reads a "report
+phishing" mailbox over IMAP and sends each reported message to the service with an API key.
   python connectors/imap_connector.py --host imap.client.example --user report-phishing@client.example [--folder INBOX] [--interval 60]
   environment: MCPD_URL (e.g. https://phishing.example.com), MCPD_API_KEY (from Integrations & API), MCPD_IMAP_PASSWORD
-How a message becomes events:
-- If staff forward a suspicious email as an attachment (message/rfc822), the attached email is the suspicious one, and the person who forwarded
-  it is the recipient. Otherwise the message itself is the suspicious one and its first To address is the recipient.
-- The email (subject and text) is one event, with its sender as identity. Up to five distinct links found in it become URL events.
-Only unread messages are read; each one is marked read after the service accepts it. Standard library only. Nothing about message content is
-printed or logged: only counts and the service's answer status."""
-import argparse, email, imaplib, json, os, re, sys, time, urllib.error, urllib.request
-from email import policy
-from email.utils import getaddresses, parseaddr
+When the server can reach the mailbox, add it under Connectors in the app instead: the server then reads it itself, live (IMAP IDLE).
+How a message becomes events is in backend/server/mailparse.py (shared with the server): a message forwarded as an attachment is the suspicious
+one and the person who forwarded it is the recipient; otherwise its first To address is. The email is one event, with its sender as identity,
+and up to five links in it become URL events. Only unread messages are read; each one is marked read after the service accepts it. Standard
+library only. Nothing about message content is printed or logged: only counts and the service's answer status."""
+import argparse, imaplib, json, os, sys, time, urllib.error, urllib.request
+from pathlib import Path
 
-URL = re.compile(r"""https?://[^\s<>"')\]]+""", re.I)
-
-
-def _text(msg) -> str:
-    """The message's plain text, or its HTML if it has no plain text (the service cleans HTML)."""
-    plain, html = [], []
-    for part in (msg.walk() if msg.is_multipart() else [msg]):
-        if part.get_content_maintype() == "multipart" or part.get_content_type() == "message/rfc822" or part.get_filename(): continue
-        try: body = part.get_content()
-        except (LookupError, ValueError): body = (part.get_payload(decode=True) or b"").decode("utf-8", "replace")
-        if not isinstance(body, str): continue
-        (plain if part.get_content_type() == "text/plain" else html if part.get_content_type() == "text/html" else []).append(body)
-    return "\n".join(plain or html).strip()
-
-
-def events_from_message(raw: bytes):
-    """Returns (recipient, events) for one mailbox message, or (None, []) when it holds nothing to check."""
-    outer = email.message_from_bytes(raw, policy=policy.default); inner = None
-    for part in outer.walk():
-        if part.get_content_type() == "message/rfc822":
-            payload = part.get_payload()
-            inner = payload[0] if isinstance(payload, list) and payload else payload if isinstance(payload, email.message.Message) else None
-            break
-    if inner is not None: suspicious, recipient = inner, parseaddr(str(outer.get("From", "")))[1]
-    else:
-        suspicious = outer; tos = [a for _, a in getaddresses([str(x) for x in outer.get_all("To", [])]) if a]
-        recipient = tos[0] if tos else parseaddr(str(outer.get("From", "")))[1]
-    text = _text(suspicious); subject = str(suspicious.get("Subject", "") or "")[:2000]
-    if not recipient or not (text or subject): return None, []
-    sender = parseaddr(str(suspicious.get("From", "")))[1]
-    events = [{"channel": "email", "text": (text or subject)[:100000], "subject": subject, "identity": sender}]
-    seen = []
-    for u in URL.findall(text):
-        u = u.rstrip(".,;:")
-        if u not in seen: seen.append(u)
-        if len(seen) == 5: break
-    events += [{"channel": "url", "text": u} for u in seen]
-    return recipient.strip().lower(), events
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+from server.mailparse import events_from_message      # noqa: E402  standard library only
 
 
 def send(base, key, recipient, events):

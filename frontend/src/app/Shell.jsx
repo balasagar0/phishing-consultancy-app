@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { can, useAuth } from "../auth.jsx";
+import { LivePill, LiveProvider } from "../live.jsx";
 import { ErrorBox } from "../ui.jsx";
 
 export function Login() {
@@ -57,19 +58,21 @@ export function Shell() {
   const hasOrg = !!me.org;
   const L = (to, label, end) => <NavLink to={to} end={end}>{label}</NavLink>;
   return (
+    <LiveProvider key={me.org?.id || 0} orgId={me.org?.id || null}>
     <div className="shell">
       <aside className={`side ${open ? "open" : ""}`}>
         <Link to="/app" className="brand"><img src="/icon.svg" alt="" />Phishing detection</Link>
         <nav aria-label="App">
           {hasOrg && (<>
             {L("/app", "Dashboard", true)}
-            {can(me, "analyst") && L("/app/scan", "Scan a message")}
-            {can(me, "analyst") && L("/app/investigate", "Investigate")}
+            {L("/app/live", "Live feed")}
             {L("/app/alerts", "Alerts")}
             {L("/app/campaigns", "Campaigns")}
             {L("/app/reports", "Reports")}
           </>)}
-          {hasOrg && can(me, "admin") && (<><div className="group">Organisation</div>{L("/app/integrations", "Integrations & API")}{L("/app/settings", "Settings & people")}</>)}
+          {hasOrg && can(me, "analyst") && (<><div className="group">Check by hand</div>{L("/app/scan", "Scan a message")}{L("/app/investigate", "Investigate")}</>)}
+          {hasOrg && can(me, "admin") && (<><div className="group">Organisation</div>{L("/app/connectors", "Connectors")}{L("/app/integrations", "Integrations & API")}
+            {L("/app/settings", "Settings & people")}</>)}
           {me.user.role === "superadmin" && (<><div className="group">Consultant</div>{L("/app/consultant", "Client organisations")}</>)}
           <div className="group">Help</div>
           {L("/app/model", "What the models can do")}
@@ -82,6 +85,7 @@ export function Shell() {
           <span className="row">
             <button className="btn small menu-btn" onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Menu">☰ Menu</button>
             <OrgPicker />
+            {hasOrg && <LivePill />}
           </span>
           <span className="row small">
             <span>{me.user.name || me.user.email} · <span className="badge neutral">{me.user.role}</span></span>
@@ -94,6 +98,7 @@ export function Shell() {
         </div>
       </div>
     </div>
+    </LiveProvider>
   );
 }
 

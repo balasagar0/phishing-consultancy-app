@@ -50,6 +50,9 @@ def edit_org(oid: int, body: OrgPatch, ctx: Ctx = Depends(need("superadmin", org
     if body.name is not None: o.name = body.name.strip()
     if body.active is not None: o.active = body.active
     M.audit(db, "org.updated", ctx.user, o.id, f"name={o.name}, active={o.active}"); db.commit()
+    from .connectors import manager                  # a disabled client's mailboxes stop being read at once
+    if o.active: manager.start_all(o.id)
+    else: manager.stop_org(o.id)
     return org_out(db, o)
 
 

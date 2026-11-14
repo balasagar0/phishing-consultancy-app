@@ -20,4 +20,4 @@ RUN python scripts/sync_engine.py --verify && useradd --system --uid 10001 app &
 USER app
 EXPOSE 8765
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/api/health', timeout=4)"
-CMD ["python", "-m", "uvicorn", "server.main:app", "--app-dir", "backend", "--host", "0.0.0.0", "--port", "8765", "--no-access-log", "--proxy-headers", "--forwarded-allow-ips", "*"]
+CMD ["python", "-m", "uvicorn", "server.main:app", "--app-dir", "backend", "--host", "0.0.0.0", "--port", "8765", "--no-access-log", "--timeout-graceful-shutdown", "3", "--proxy-headers", "--forwarded-allow-ips", "*"]

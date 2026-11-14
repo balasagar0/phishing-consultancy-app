@@ -1,9 +1,10 @@
 """Work shared by the signed-in routes and the API-key routes: request shapes, recording events with their alert cases, and the retention purge."""
-import json, time
+import hashlib, hmac, json, time
 from collections import Counter
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import delete, select
 from . import db as M, engine
+from .deps import Ctx
 
 MAX_TEXT = 100_000
 
@@ -48,19 +49,74 @@ def log_bundle(db, ctx, kind, channels, score=None, alert=None):
     for ch, n in sorted(Counter(channels).items()): log_scan(db, ctx, kind, ch, n, score, alert)
 
 
-def record_events(db, ctx, body: EventsIn, source: str):
-    """Stores the events in the organisation's event store and opens one alert case per new engine alert."""
-    org = ctx.org; r = engine.add_events(org, body.recipient.strip(), [e.engine_dict() for e in body.events])
+def _hide(tokens, keep):
+    return list(tokens) if keep else [t.split(":")[0] + ":(hidden)" for t in tokens]
+
+
+def message_out(m: M.MessageLog) -> dict:
+    return {"id": m.id, "at": m.at, "received_at": m.received_at, "channel": m.channel, "source": m.source, "origin": m.origin,
+            "recipient": m.recipient_label or f"recipient {m.recipient_ref}", "score": None if m.score is None else round(m.score, 3), "label": m.label,
+            "assessed": m.assessed, "campaign_id": m.campaign_id, "campaign_risk": None if m.campaign_risk is None else round(m.campaign_risk, 3),
+            "indicators": json.loads(m.indicators or "[]")}
+
+
+def alert_brief(c: M.AlertCase) -> dict:
+    return {"case_id": c.id, "risk": round(c.risk, 3), "channels": [x for x in c.channels.split(",") if x], "recipient": c.recipient_label or f"recipient {c.recipient_ref}",
+            "indicators": json.loads(c.indicators or "[]"), "campaign_id": c.campaign_id, "source": c.source, "status": c.status, "created_at": c.created_at}
+
+
+def record_events(db, ctx, body: EventsIn, source: str, *, audit: bool = True, origin: str = ""):
+    """Stores the events in the organisation's event store, opens one alert case per new engine alert, keeps a feed row per message (never its
+    text), then tells every open page (live.py) and the organisation's alert webhook (hooks_out.py). Connectors pass audit=False: a busy
+    mailbox would bury the people's actions in the audit log; their counts are on the connector instead."""
+    from . import hooks_out
+    from .live import bus
+    org = ctx.org; rec = body.recipient.strip(); keep = org.keep_labels
+    r = engine.add_events(org, rec, [e.engine_dict() for e in body.events])
+    cases, rows = [], []
     for a in r["new_alerts"]:
-        case = M.AlertCase(org_id=org.id, engine_alert_id=a["id"], campaign_id=a["campaign_id"], recipient_label=body.recipient.strip() if org.keep_labels else "",
+        case = M.AlertCase(org_id=org.id, engine_alert_id=a["id"], campaign_id=a["campaign_id"], recipient_label=rec if keep else "",
                            recipient_ref=r["recipient_ref"], risk=float(a["risk"]), reason=a["reason"], channels=",".join(a["channels"]),
-                           indicators=json.dumps(a["shared_identity_tokens"] if org.keep_labels else [t.split(":")[0] + ":(hidden)" for t in a["shared_identity_tokens"]]),
-                           source=source)
-        db.add(case); db.flush(); a["case_id"] = case.id
+                           indicators=json.dumps(_hide(a["shared_identity_tokens"], keep)), source=source)
+        db.add(case); db.flush(); a["case_id"] = case.id; cases.append(case)
+    camp_of = {eid: c for c in r["campaigns"] for eid in c["event_ids"]}; now = time.time()
+    for o in r["events"]:
+        c = camp_of.get(o.get("event_id")); t = o["t_minutes"] * 60.0
+        m = M.MessageLog(org_id=org.id, at=t if t > 6e7 else now, received_at=now, channel=o["channel"], source=source, origin=origin[:200],
+                         recipient_label=rec if keep else "", recipient_ref=r["recipient_ref"], score=o["score"], label=str(o["label"])[:40],
+                         assessed=bool(o["assessed"]), event_id=o.get("event_id"), campaign_id=c["id"] if c else None,
+                         campaign_risk=c["risk"] if c else None, indicators=json.dumps(_hide(o["identity_tokens"], keep)))
+        db.add(m); rows.append(m)
     log_bundle(db, ctx, "events", [e["channel"] for e in r["events"]], r["highest_campaign_risk"], bool(r["new_alerts"]))
-    M.audit(db, "events.recorded", ctx.user, org.id, f"{len(r['events'])} event(s) via {source}; {len(r['new_alerts'])} new alert(s)")
+    if audit: M.audit(db, "events.recorded", ctx.user, org.id, f"{len(r['events'])} event(s) via {source}; {len(r['new_alerts'])} new alert(s)")
     db.commit()
+    for m in rows: bus.publish(org.id, "message", **message_out(m))
+    for c in cases:
+        bus.publish(org.id, "alert", **alert_brief(c)); hooks_out.enqueue(org.id, c.id)
     return r
+
+
+def record_mail(org_id: int, raw: bytes, *, mode: str, mailbox: str = "", received_at: float | None = None, source: str, origin: str = "") -> dict:
+    """One email from a mailbox connector or the email webhook. Returns {"status": recorded | duplicate | empty | too_large, ...}."""
+    from . import mailparse
+    if len(raw) > mailparse.MAX_RAW: return {"status": "too_large"}
+    p = mailparse.parse(raw, mode, mailbox, received_at)
+    if p is None: return {"status": "empty"}
+    db = M.session()
+    try:
+        org = db.get(M.Org, org_id)
+        if org is None or not org.active: return {"status": "org_disabled"}
+        key = hmac.new(engine.org_key(org.id), f"{p['message_id']}|{p['recipient']}".encode(), hashlib.sha256).hexdigest()
+        if db.scalar(select(M.SeenMessage.id).where(M.SeenMessage.org_id == org.id, M.SeenMessage.key == key)): return {"status": "duplicate"}
+        db.add(M.SeenMessage(org_id=org.id, key=key))
+        events = [e for e in p["events"] if e["channel"] != "url" or engine.url_ok(e["text"])]
+        r = record_events(db, Ctx(user=None, org=org), EventsIn(recipient=p["recipient"], events=events), source, audit=False, origin=origin)
+        return {"status": "recorded", "events": len(r["events"]), "alerts": len(r["new_alerts"]), "recipient_ref": r["recipient_ref"],
+                "new_alerts": [{"case_id": a["case_id"], "risk": round(a["risk"], 3)} for a in r["new_alerts"]]}
+    except Exception:
+        db.rollback(); raise
+    finally:
+        db.close()
 
 
 def purge_org(db, org, older_than_days=None):
@@ -71,6 +127,9 @@ def purge_org(db, org, older_than_days=None):
     if old: db.execute(delete(M.AlertNote).where(M.AlertNote.case_id.in_(old)))
     n_cases = db.execute(delete(M.AlertCase).where(M.AlertCase.org_id == org.id, M.AlertCase.created_at < cut)).rowcount
     n_scans = db.execute(delete(M.ScanLog).where(M.ScanLog.org_id == org.id, M.ScanLog.created_at < cut)).rowcount
-    M.audit(db, "retention.purge", None, org.id, f"older than {days:g} days: {res['events_deleted']} events, {n_cases} alert cases, {n_scans} scan rows")
+    n_feed = db.execute(delete(M.MessageLog).where(M.MessageLog.org_id == org.id, M.MessageLog.received_at < cut)).rowcount
+    db.execute(delete(M.SeenMessage).where(M.SeenMessage.org_id == org.id, M.SeenMessage.created_at < cut))
+    M.audit(db, "retention.purge", None, org.id, f"older than {days:g} days: {res['events_deleted']} events, {n_cases} alert cases, {n_scans} scan rows, "
+                                                 f"{n_feed} feed rows")
     db.commit()
-    return {**res, "alert_cases_deleted": n_cases, "scan_rows_deleted": n_scans, "older_than_days": days}
+    return {**res, "alert_cases_deleted": n_cases, "scan_rows_deleted": n_scans, "feed_rows_deleted": n_feed, "older_than_days": days}

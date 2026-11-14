@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../api.js";
 import { useAuth } from "../auth.jsx";
 import { CopyButton, Empty, ErrorBox, Loading, fmtTime, useLoad } from "../ui.jsx";
 import { PageHead } from "./Shell.jsx";
 
-function useAction() {
+export function useAction() {
   const [s, set] = useState({ busy: false, error: null, ok: null });
   const run = async (fn, ok = "Saved.") => { set({ busy: true, error: null, ok: null }); try { const r = await fn(); set({ busy: false, error: null, ok }); return r; } catch (e) { set({ busy: false, error: e, ok: null }); return null; } };
   return [s, run];
@@ -46,7 +47,9 @@ export function Integrations() {
           <h3>Score one message</h3>
           <pre>{`curl -X POST ${origin}/api/v1/scan -H "Authorization: Bearer <your key>" \\
   -H "Content-Type: application/json" -d '{"channel": "url", "text": "http://example.test/login"}'`}</pre>
-          <p className="small muted">A ready mail connector is in the app folder: <code>connectors/imap_connector.py</code> reads a "report phishing" mailbox and sends each message in. Keys allow 120 requests a minute.</p>
+          <p className="small muted">To have messages arrive by themselves, as they are received, add a mailbox or set up the SMS and email webhooks
+            under <Link to="/app/connectors">Connectors</Link>. For a mailbox the server cannot reach, <code>connectors/imap_connector.py</code> in the app folder
+            reads it from inside your network and sends each message in. Keys allow 120 requests a minute (600 for webhooks).</p>
         </div>
       </div>
     </>

@@ -64,7 +64,9 @@ def seed_demo(db):
     from server import engine
     from server.deps import Ctx
     from server.services import EventsIn, record_events
-    if db.scalar(select(M.Org).where(M.Org.slug == "demo-client")): sys.exit("the demo organisation already exists")
+    o = db.scalar(select(M.Org).where(M.Org.slug == "demo-client"))
+    if o is not None:
+        print("the demo organisation already exists" + ("; added the demo replay connector" if add_demo_replay(db, o) else "")); return
     o = create_org(db, "Demo Client"); lines = ["Demo accounts (local demo only; delete with the data folder)."]
     su = db.scalar(select(M.User).where(M.User.role == "superadmin"))
     if su is None:
@@ -79,8 +81,18 @@ def seed_demo(db):
         ts = [float(e.get("time") or i) for i, e in enumerate(P[pid]["events"])]; now_min = _t.time() / 60.0
         evs = [{**{k: e.get(k) for k in ("channel", "text", "subject", "identity")}, "time": str(now_min - (max(ts) - t))} for e, t in zip(P[pid]["events"], ts)]
         record_events(db, ctx, EventsIn(recipient=rec, events=evs), "demo")
+    add_demo_replay(db, o)
     p = get_settings().data_dir / "demo_credentials.txt"; p.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"demo organisation created with users and hand-written demo events; passwords in {p}")
+
+
+def add_demo_replay(db, o) -> bool:
+    """A paused 'demo replay' source: pressing Play in the app sends the hand-written demo messages in one by one with the current time, so the
+    live feed, the campaigns and the alerts can be shown filling up. Only the command line creates one, so no client organisation gets fake data."""
+    if db.scalar(select(M.Connector).where(M.Connector.org_id == o.id, M.Connector.kind == "demo")): return False
+    db.add(M.Connector(org_id=o.id, kind="demo", name="Demo replay (hand-written messages)", active=False, config='{"seconds_between": 4}',
+                       status="paused", detail="press Play to replay the hand-written demo messages, one every 4 s"))
+    db.commit(); return True
 
 
 if __name__ == "__main__":

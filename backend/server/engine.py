@@ -29,6 +29,11 @@ def score(channel, text, subject=""):
     return cp1._run(cp1.Item(channel=channel, text=text, subject=subject or ""))
 
 
+def url_ok(u: str) -> bool:
+    """True when cp1-final would accept this text as a URL event (links pulled out of a message are checked before they are sent)."""
+    return not cp1.check_url(u)
+
+
 def correlate(events, window_minutes=None):
     return cp1.correlate(cp1.Bundle(events=[cp1.Event(**e) for e in events], window_minutes=window_minutes))
 

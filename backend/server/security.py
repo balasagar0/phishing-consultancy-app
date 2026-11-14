@@ -1,6 +1,7 @@
-"""Passwords, tokens, API keys, rate limits and security headers. Standard library only."""
-import hashlib, hmac, re, secrets, threading, time
+"""Passwords, tokens, API keys, rate limits, security headers, and the checks on addresses the server connects to. Standard library only."""
+import hashlib, hmac, ipaddress, os, re, secrets, socket, threading, time, urllib.error, urllib.request
 from collections import deque
+from urllib.parse import urlsplit
 
 _N, _R, _P = 2 ** 14, 8, 1
 EMAIL = re.compile(r"^[^@\s]{1,64}@[^@\s]{1,255}\.[^@\s]{2,}$")
@@ -67,6 +68,49 @@ SECURITY_HEADERS = {
     "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
     "Cross-Origin-Opener-Policy": "same-origin",
 }
+
+
+HOSTNAME = re.compile(r"^(?=.{1,253}$)[A-Za-z0-9]([A-Za-z0-9-]{0,62}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,62}[A-Za-z0-9])?)*$")
+
+
+def private_allowed() -> bool:
+    """MCPD_ALLOW_PRIVATE_HOSTS=1 lets connectors and webhooks reach private and local addresses: for an install inside a client's network,
+    and for tests. Off by default, so one client's admin cannot make the server probe the network it runs in."""
+    return os.environ.get("MCPD_ALLOW_PRIVATE_HOSTS", "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def vet_host(host: str, port: int) -> str:
+    """Resolves a host the server is about to connect to and returns the address to use. Refuses private, local and reserved addresses unless
+    they are allowed. Connecting to the returned address (not the name again) keeps a second DNS answer from changing the target."""
+    if not HOSTNAME.match(host or ""): raise ValueError("the host name does not look right")
+    try: infos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+    except socket.gaierror: raise ValueError(f"cannot find the address of {host}")
+    addrs = [i[4][0] for i in infos]
+    for a in addrs:
+        ip = ipaddress.ip_address(a.split("%")[0])
+        if not ip.is_global and not private_allowed():
+            raise ValueError(f"{host} is a private or local address; the server's operator must set MCPD_ALLOW_PRIVATE_HOSTS=1 to allow it")
+    return addrs[0]
+
+
+def vet_url(url: str) -> str:
+    """An outgoing webhook address: https (http only where private addresses are allowed), a proper host, a public address."""
+    p = urlsplit(url or "")
+    if p.scheme not in ("https", "http") or not p.hostname: raise ValueError("give a full address starting with https://")
+    if p.scheme == "http" and not private_allowed(): raise ValueError("use https://; plain http is allowed only inside a private network")
+    if p.username or p.password: raise ValueError("put no user name or password in the address; use the signing secret")
+    vet_host(p.hostname, p.port or (443 if p.scheme == "https" else 80))
+    return url
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise urllib.error.HTTPError(req.full_url, code, f"redirect refused ({code})", headers, fp)
+
+
+# For every request the server makes on its own (alert webhooks, Microsoft Graph): a redirect is refused, so it can neither lead the server
+# past vet_url to a private address nor carry an access token to another host.
+no_redirect_opener = urllib.request.build_opener(_NoRedirect)
 
 
 def csv_safe(v) -> str:

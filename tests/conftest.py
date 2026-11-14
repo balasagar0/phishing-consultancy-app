@@ -6,7 +6,8 @@ import pytest
 
 APP = Path(__file__).resolve().parents[1]
 TMP = tempfile.mkdtemp(prefix="mcpd_test_")
-os.environ.update({"MCPD_DATA_DIR": TMP, "MCPD_PURGE_INTERVAL_HOURS": "0", "MCPD_IGNORE_ENV_FILE": "1"})
+# The connector tests talk to stand-in servers on 127.0.0.1 (tests/fakes.py), so local addresses are allowed here; one test turns it off again.
+os.environ.update({"MCPD_DATA_DIR": TMP, "MCPD_PURGE_INTERVAL_HOURS": "0", "MCPD_IGNORE_ENV_FILE": "1", "MCPD_ALLOW_PRIVATE_HOSTS": "1"})
 for k in ("MCPD_DATABASE_URL", "MCPD_MASTER_KEY", "MCPD_SECURE_COOKIES"): os.environ.pop(k, None)
 sys.path.insert(0, str(APP / "backend"))
 
@@ -48,3 +49,17 @@ def login():
 
 @pytest.fixture
 def anon(): return TestClient(app)
+
+
+@pytest.fixture(scope="session")
+def live_server():
+    """The app on a real port (uvicorn in a thread), for the live event stream: the test client cannot read an endless response."""
+    import threading, time, uvicorn
+    from fakes import free_port
+    port = free_port(); srv = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=port, log_level="warning", lifespan="on", timeout_graceful_shutdown=1))
+    t = threading.Thread(target=srv.run, daemon=True); t.start()
+    end = time.monotonic() + 20
+    while not srv.started and time.monotonic() < end: time.sleep(0.05)
+    assert srv.started, "the live server did not start"
+    yield f"http://127.0.0.1:{port}"
+    srv.should_exit = True; t.join(10)

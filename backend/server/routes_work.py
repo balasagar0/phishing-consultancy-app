@@ -8,6 +8,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session as DB
 from . import db as M, engine
 from .deps import Ctx, need
+from .live import bus
 from .security import csv_safe
 from .services import CorrelateIn, EventsIn, ScanIn, log_bundle, log_scan, record_events
 
@@ -38,7 +39,7 @@ def correlate(body: CorrelateIn, ctx: Ctx = Depends(need("analyst")), db: DB = D
 
 @router.post("/events")
 def events(body: EventsIn, ctx: Ctx = Depends(need("analyst")), db: DB = Depends(M.get_db)):
-    return record_events(db, ctx, body, "web")
+    return record_events(db, ctx, body, "web", origin=ctx.user.name or ctx.user.email)
 
 
 @router.get("/campaigns")
@@ -109,7 +110,9 @@ def update_alert(cid: int, body: CasePatch, ctx: Ctx = Depends(need("analyst")),
             raise HTTPException(422, "assign the alert to an active analyst or admin of this organisation")
         c.assignee_id = u.id; changes.append(f"assigned to {u.email}")
     c.updated_at = M.now(); M.audit(db, "alert.updated", ctx.user, ctx.org.id, f"alert case {c.id}: " + "; ".join(changes)); db.commit()
-    return case_out(c, _users(db, ctx.org.id))
+    out = case_out(c, _users(db, ctx.org.id))
+    bus.publish(ctx.org.id, "alert_update", case_id=c.id, status=c.status, assignee=out["assignee"], by=ctx.user.name or ctx.user.email)
+    return out
 
 
 class NoteIn(BaseModel):
@@ -120,6 +123,7 @@ class NoteIn(BaseModel):
 def add_note(cid: int, body: NoteIn, ctx: Ctx = Depends(need("analyst")), db: DB = Depends(M.get_db)):
     c = _case(db, ctx, cid); n = M.AlertNote(case_id=c.id, user_id=ctx.user.id, text=body.text.strip()); db.add(n)
     c.updated_at = M.now(); M.audit(db, "alert.note", ctx.user, ctx.org.id, f"alert case {c.id}"); db.commit()
+    bus.publish(ctx.org.id, "alert_update", case_id=c.id, status=c.status, note=True, by=ctx.user.name or ctx.user.email)
     return {"id": n.id, "text": n.text, "by": ctx.user.name or ctx.user.email, "at": n.created_at}
 
 
@@ -147,7 +151,10 @@ def dashboard(ctx: Ctx = Depends(need("viewer")), db: DB = Depends(M.get_db)):
             "messages_checked_30d": sum(s.n_events for s in scans), "alerts_open": open_all, "alerts_30d": len(cases),
             "alerts_by_status_30d": dict(Counter(c.status for c in cases)), "alerts_per_day": [{"day": d, "n": per_day.get(d, 0)} for d in days],
             "messages_by_channel_30d": dict(chan), "top_indicators_30d": ind.most_common(8),
-            "active_campaigns": len(engine.store(org).campaigns(None, active_only=True)), "engine": engine.info()}
+            "active_campaigns": len(engine.store(org).campaigns(None, active_only=True)), "engine": engine.info(),
+            "last_message_at": db.scalar(select(func.max(M.MessageLog.received_at)).where(M.MessageLog.org_id == org.id)),
+            "messages_last_hour": db.scalar(select(func.count()).select_from(M.MessageLog).where(M.MessageLog.org_id == org.id, M.MessageLog.received_at >= t - 3600)),
+            "sources": dict(Counter(c.status for c in db.scalars(select(M.Connector).where(M.Connector.org_id == org.id))))}
 
 
 def _report(db, ctx, days):

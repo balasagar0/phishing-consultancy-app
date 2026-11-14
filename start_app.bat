@@ -7,4 +7,4 @@ set PORT=8765
 if exist ".env" for /f "usebackq tokens=1,2 delims==" %%a in (".env") do if /i "%%a"=="MCPD_PORT" set PORT=%%b
 echo Starting on http://127.0.0.1:%PORT%  (close this window to stop)
 start "" "http://127.0.0.1:%PORT%/"
-".venv\Scripts\python.exe" -m uvicorn server.main:app --app-dir backend --host 127.0.0.1 --port %PORT% --no-access-log
+".venv\Scripts\python.exe" -m uvicorn server.main:app --app-dir backend --host 127.0.0.1 --port %PORT% --no-access-log --timeout-graceful-shutdown 3

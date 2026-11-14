@@ -5,6 +5,8 @@ import { Login, RequireAuth, Shell } from "./app/Shell.jsx";
 import { Dashboard, Investigate, Scan } from "./app/Work.jsx";
 import { AlertDetail, AlertsList, CampaignDetail, Campaigns, ReportPrint, Reports } from "./app/Alerts.jsx";
 import { Account, Consultant, Integrations, ModelCard, Settings } from "./app/Admin.jsx";
+import { Connectors } from "./app/Connectors.jsx";
+import { LiveFeed } from "./app/Live.jsx";
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
           <Route path="app" element={<RequireAuth />}>
             <Route element={<Shell />}>
               <Route index element={<Dashboard />} />
+              <Route path="live" element={<LiveFeed />} />
+              <Route path="connectors" element={<Connectors />} />
               <Route path="scan" element={<Scan />} />
               <Route path="investigate" element={<Investigate />} />
               <Route path="alerts" element={<AlertsList />} />

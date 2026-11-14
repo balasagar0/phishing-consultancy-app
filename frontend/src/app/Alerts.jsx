@@ -3,19 +3,28 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { api, download } from "../api.js";
 import { can, useAuth } from "../auth.jsx";
 import { CopyButton, Empty, ErrorBox, HBars, Loading, RiskBadge, StatusBadge, Tiles, fmtMinutes, fmtTime, score3, statusLabel, useLoad } from "../ui.jsx";
+import { useLive, useLiveReload } from "../live.jsx";
 import { PageHead } from "./Shell.jsx";
 
 const ALL = ["new", "investigating", "confirmed", "false_alarm", "closed"];
+const RAISED_BY = { api: "a system using the API", demo: "the demo data (hand-written messages)", web: "the web app", mailbox: "a connected mailbox",
+  "sms-hook": "the SMS webhook", "mail-hook": "the email webhook" };
 
 export function AlertsList() {
   const [sp, setSp] = useSearchParams(); const nav = useNavigate();
   const status = sp.getAll("status"); const days = sp.get("days") || "90"; const [q, setQ] = useState(sp.get("q") || "");
   const qs = new URLSearchParams([...status.map((s) => ["status", s]), ["days", days], ...(sp.get("q") ? [["q", sp.get("q")]] : [])]).toString();
-  const list = useLoad(() => api(`/api/alerts?${qs}`), [qs]);
+  const list = useLoad(() => api(`/api/alerts?${qs}`), [qs]); const [fresh, setFresh] = useState(() => new Set());
+  useLiveReload(["alert", "alert_update"], list.reload);
+  useLive(["alert"], (t, d) => {
+    if (t !== "alert") return;
+    setFresh((f) => new Set(f).add(d.case_id));
+    setTimeout(() => setFresh((f) => { const n = new Set(f); n.delete(d.case_id); return n; }), 4000);
+  });
   const toggle = (s) => { const n = new URLSearchParams(sp); const cur = n.getAll("status"); n.delete("status"); (cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]).forEach((x) => n.append("status", x)); setSp(n); };
   return (
     <>
-      <PageHead title="Alerts">One alert per campaign that reached the alert line. Work them from new to closed.</PageHead>
+      <PageHead title="Alerts">One alert per campaign that reached the alert line. New alerts appear here by themselves. Work them from new to closed.</PageHead>
       <div className="card" style={{ marginBottom: 16 }}>
         <div className="row">
           <span className="small muted">Status:</span>
@@ -35,7 +44,7 @@ export function AlertsList() {
           <table>
             <thead><tr><th>Raised</th><th>Risk</th><th>Recipient</th><th>Channels</th><th>Indicators</th><th>Status</th><th>Assigned to</th></tr></thead>
             <tbody>{list.data.map((a) => (
-              <tr key={a.id} className="click" tabIndex={0} onClick={() => nav(`/app/alerts/${a.id}`)} onKeyDown={(e) => e.key === "Enter" && nav(`/app/alerts/${a.id}`)}>
+              <tr key={a.id} className={`click ${fresh.has(a.id) ? "flash" : ""}`} tabIndex={0} onClick={() => nav(`/app/alerts/${a.id}`)} onKeyDown={(e) => e.key === "Enter" && nav(`/app/alerts/${a.id}`)}>
                 <td className="small">{fmtTime(a.created_at)}</td><td><RiskBadge score={a.risk} /></td><td>{a.recipient}</td><td>{a.channels.join(", ")}</td>
                 <td>{a.indicators.slice(0, 3).map((i) => <span className="chip mono" key={i}>{i}</span>)}</td><td><StatusBadge status={a.status} /></td>
                 <td>{a.assignee?.name || <span className="muted">nobody</span>}</td>
@@ -50,6 +59,7 @@ export function AlertsList() {
 
 export function AlertDetail() {
   const { id } = useParams(); const { me } = useAuth(); const a = useLoad(() => api(`/api/alerts/${id}`), [id]);
+  useLiveReload(["alert_update", "message"], a.reload, (d) => d.case_id === Number(id) || (!!a.data && d.campaign_id === a.data.campaign_id));
   const people = useLoad(() => api("/api/assignees"), []); const [note, setNote] = useState(""); const [err, setErr] = useState(null);
   const patch = async (body) => { setErr(null); try { await api(`/api/alerts/${id}`, { method: "PATCH", body }); a.reload(); } catch (e) { setErr(e); } };
   const addNote = async (e) => { e.preventDefault(); setErr(null); try { await api(`/api/alerts/${id}/notes`, { method: "POST", body: { text: note } }); setNote(""); a.reload(); } catch (x) { setErr(x); } };
@@ -59,7 +69,7 @@ export function AlertDetail() {
   return (
     <>
       <p><Link to="/app/alerts">← All alerts</Link></p>
-      <PageHead title={`Alert ${x.id}: ${x.recipient}`}>Raised {fmtTime(x.created_at)} from {x.source === "api" ? "a connector" : x.source === "demo" ? "demo data" : "the web app"}.</PageHead>
+      <PageHead title={`Alert ${x.id}: ${x.recipient}`}>Raised {fmtTime(x.created_at)} from {RAISED_BY[x.source] || x.source}.</PageHead>
       <ErrorBox error={err} />
       <div className="grid two">
         <div className="card stack">
@@ -109,9 +119,10 @@ export function Timeline({ c }) {
 
 export function Campaigns() {
   const [inactive, setInactive] = useState(false); const list = useLoad(() => api(`/api/campaigns?include_inactive=${inactive}`), [inactive]); const nav = useNavigate();
+  useLiveReload(["message"], list.reload, () => true, 1200);
   return (
     <>
-      <PageHead title="Campaigns">Each person's messages, grouped by time window. A campaign at or above the alert line opened an alert.</PageHead>
+      <PageHead title="Campaigns">Each person's messages, grouped by time window, updated as messages arrive. A campaign at or above the alert line opened an alert.</PageHead>
       <label className="check"><input type="checkbox" checked={inactive} onChange={(e) => setInactive(e.target.checked)} /> Show campaigns that were merged into larger ones</label>
       <div className="card table-wrap">
         {list.loading && !list.data ? <Loading /> : <ErrorBox error={list.error} />}
@@ -134,6 +145,7 @@ export function Campaigns() {
 
 export function CampaignDetail() {
   const { id } = useParams(); const c = useLoad(() => api(`/api/campaigns/${id}`), [id]);
+  useLiveReload(["message"], c.reload, (d) => d.campaign_id === Number(id));
   if (c.loading && !c.data) return <Loading />;
   if (c.error) return <ErrorBox error={c.error} />;
   return (<><p><Link to="/app/campaigns">← All campaigns</Link></p><PageHead title={`Campaign ${id}`}>Risk {score3(c.data.risk)}; {c.data.n_events} message(s).</PageHead><Timeline c={c.data} /></>);

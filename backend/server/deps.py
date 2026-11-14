@@ -1,4 +1,5 @@
 """Who is calling: a signed-in person (session cookie + CSRF header) or a connector (API key). Every data route is scoped to one organisation."""
+import base64, binascii
 from dataclasses import dataclass
 from fastapi import Depends, HTTPException, Request
 from sqlalchemy import select
@@ -48,14 +49,33 @@ def need(min_role: str, org: bool = True):
     return dep
 
 
-def api_key_ctx(request: Request, db: DB = Depends(M.get_db)) -> Ctx:
+def _key_of(request: Request) -> str:
+    """'Authorization: Bearer <key>', 'X-API-Key: <key>', or HTTP Basic with the key as the password (for SMS gateways such as Twilio, which
+    can put credentials in the webhook address but cannot add headers)."""
     auth = request.headers.get("authorization", "")
-    key = auth[7:].strip() if auth.lower().startswith("bearer ") else request.headers.get("x-api-key", "").strip()
+    if auth.lower().startswith("bearer "): return auth[7:].strip()
+    if auth.lower().startswith("basic "):
+        try: return base64.b64decode(auth[6:].strip(), validate=True).decode("utf-8").split(":", 1)[1].strip()
+        except (ValueError, IndexError, UnicodeDecodeError, binascii.Error): return ""
+    return request.headers.get("x-api-key", "").strip()
+
+
+def _key_ctx(request: Request, db: DB, per_minute: int) -> Ctx:
+    key = _key_of(request)
     if not key: raise HTTPException(401, "send the API key as 'Authorization: Bearer <key>'")
     k = db.scalar(select(M.ApiKey).where(M.ApiKey.key_hash == hash_token(key)))
     if k is None or k.revoked_at is not None: raise HTTPException(401, "unknown or revoked API key")
     org = db.get(M.Org, k.org_id)
     if org is None or not org.active: raise HTTPException(403, "this organisation is disabled")
-    if not limiter.allow(f"key:{k.id}", 120, 60): raise HTTPException(429, "too many requests for this key: at most 120 a minute")
+    if not limiter.allow(f"key:{k.id}", per_minute, 60): raise HTTPException(429, f"too many requests for this key: at most {per_minute} a minute")
     k.last_used_at = M.now(); db.commit()
     return Ctx(user=None, org=org, api_key=k)
+
+
+def api_key_ctx(request: Request, db: DB = Depends(M.get_db)) -> Ctx:
+    return _key_ctx(request, db, 120)
+
+
+def hook_key_ctx(request: Request, db: DB = Depends(M.get_db)) -> Ctx:
+    """Webhooks carry one message each and arrive as fast as messages do, so they get a larger allowance."""
+    return _key_ctx(request, db, 600)

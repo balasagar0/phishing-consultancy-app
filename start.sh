@@ -3,4 +3,4 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 PORT="${MCPD_PORT:-$(grep -E '^MCPD_PORT=' .env 2>/dev/null | cut -d= -f2 || true)}"; PORT="${PORT:-8765}"
-exec .venv/bin/python -m uvicorn server.main:app --app-dir backend --host 127.0.0.1 --port "$PORT" --no-access-log
+exec .venv/bin/python -m uvicorn server.main:app --app-dir backend --host 127.0.0.1 --port "$PORT" --no-access-log --timeout-graceful-shutdown 3

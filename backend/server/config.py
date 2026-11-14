@@ -33,6 +33,8 @@ class Settings:
     secure_cookies: bool = field(default_factory=lambda: _bool("MCPD_SECURE_COOKIES", False))     # set to 1 behind HTTPS
     session_hours: float = field(default_factory=lambda: float(os.environ.get("MCPD_SESSION_HOURS", "12")))
     purge_interval_hours: float = field(default_factory=lambda: float(os.environ.get("MCPD_PURGE_INTERVAL_HOURS", "24")))
+    public_url: str = field(default_factory=lambda: os.environ.get("MCPD_PUBLIC_URL", "").rstrip("/"))    # for links in alert webhooks
+    run_connectors: bool = field(default_factory=lambda: _bool("MCPD_RUN_CONNECTORS", True))              # start mailbox connectors with the server
     max_text_chars: int = 100_000
     max_events: int = 20
     login_attempts_before_lock: int = 5

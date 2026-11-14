@@ -2,17 +2,19 @@
   python scripts/ui_check.py [--url http://127.0.0.1:8765]
 Signs in with the demo accounts in data/demo_credentials.txt (run `python -m server.cli seed-demo` first), opens every page at a laptop and a phone
 size, and checks: the page shows its heading, nothing runs off the screen sideways, the browser console has no errors (apart from the expected
-401 of 'who am I' before signing in), and the service worker that makes the app installable registers. Screenshots go to data/screenshots/
-(outside git). Exit code 0 when every check passes."""
-import argparse, json, re, sys
+401 of 'who am I' before signing in), and the service worker that makes the app installable registers. At laptop size it also plays the
+demo replay (hand-written messages) and checks that they appear in the open Live feed without a reload and that a new alert pops up.
+Screenshots go to data/screenshots/ (outside git). Exit code 0 when every check passes."""
+import argparse, json, re, sys, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 APP = Path(__file__).resolve().parents[1]; SHOTS = APP / "data" / "screenshots"
 SITE = [("/", "Find the phishing campaign"), ("/how-it-works", "How it works"), ("/results", "Results, with their limits"), ("/privacy", "Privacy"), ("/pilot", "Request a pilot")]
 APPP = [("/app", "Dashboard"), ("/app/scan", "Scan a message"), ("/app/investigate", "Investigate a set of messages"), ("/app/alerts", "Alerts"), ("/app/alerts/1", "Alert 1"),
-        ("/app/campaigns", "Campaigns"), ("/app/reports", "Reports"), ("/app/reports/print?days=30", "Phishing report"), ("/app/model", "What the models can do"), ("/app/account", "My account")]
-ADMIN = [("/app/integrations", "Integrations & API"), ("/app/settings", "Settings & people")]
+        ("/app/campaigns", "Campaigns"), ("/app/reports", "Reports"), ("/app/reports/print?days=30", "Phishing report"), ("/app/model", "What the models can do"), ("/app/account", "My account"),
+        ("/app/live", "Live feed")]
+ADMIN = [("/app/connectors", "Connectors"), ("/app/integrations", "Integrations & API"), ("/app/settings", "Settings & people")]
 
 
 def creds():
@@ -22,6 +24,7 @@ def creds():
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(); ap.add_argument("--url", default="http://127.0.0.1:8765"); a = ap.parse_args()
     C = creds(); SHOTS.mkdir(parents=True, exist_ok=True); results = []
     def check(name, ok, detail=""): results.append((name, bool(ok), detail)); print(("PASS " if ok else "FAIL ") + name + (f" - {detail}" if detail else ""))
@@ -33,8 +36,10 @@ def main():
             page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
             page.on("response", lambda r: errors.append(f"HTTP {r.status} {r.url}") if r.status >= 500 or (r.status == 401 and "/api/auth/me" not in r.url) else None)
             def visit(path, heading, user):
-                page.goto(a.url + path); page.wait_for_load_state("networkidle")
-                ok = page.get_by_text(heading, exact=False).first.is_visible()
+                page.goto(a.url + path, wait_until="domcontentloaded")      # not "networkidle": app pages keep the live stream open
+                try: page.get_by_text(heading, exact=False).first.wait_for(timeout=15000); ok = True
+                except Exception: ok = False
+                page.wait_for_timeout(700)
                 over = page.evaluate("document.documentElement.scrollWidth - window.innerWidth")
                 fn = f"{size}_{user}_{path.strip('/').replace('/', '_').split('?')[0] or 'home'}.png"; page.screenshot(path=str(SHOTS / fn), full_page=True)
                 check(f"{size} {path}: heading shown, no sideways overflow", ok and over <= 1, f"overflow {over}px" if over > 1 else "")
@@ -54,6 +59,28 @@ def main():
             page.fill("input[type=email]", "admin@demo.test"); page.fill("input[type=password]", C["admin@demo.test"]); page.click("button:has-text('Sign in')")
             page.wait_for_url(re.compile(r".*/app/?$"))
             for path, hd in ADMIN: visit(path, hd, "admin")
+            if size == "laptop":                     # live: hand-written demo messages appear in the open feed without a reload
+                page.goto(a.url + "/app/live", wait_until="domcontentloaded")
+                try: page.locator(".live-pill.ok").wait_for(timeout=15000); live = True
+                except Exception: live = False
+                check("laptop: the live stream connects (the page shows Live)", live)
+                if page.locator("button:has-text('Stop the demo')").count(): page.click("button:has-text('Stop the demo')"); page.wait_for_timeout(1000)
+                page.locator("table.feed").or_(page.get_by_text("No message yet")).first.wait_for(timeout=15000)
+                before = page.locator("table.feed tbody tr").count()
+                page.click("button:has-text('Play the demo feed')"); t0 = time.monotonic(); seen_flash = 0
+                while time.monotonic() - t0 < 45:          # polled from here: the app's CSP (rightly) refuses the page-side string eval of wait_for_function
+                    seen_flash = max(seen_flash, page.locator("table.feed tbody tr.flash").count())
+                    if page.locator("table.feed tbody tr").count() >= before + 3 or seen_flash >= 3: break
+                    page.wait_for_timeout(250)
+                after = page.locator("table.feed tbody tr").count(); grew = after >= before + 3 or seen_flash >= 3
+                check("laptop: new messages appear in the live feed without a reload", grew, f"{before} rows before, {after} after, {time.monotonic() - t0:.0f} s")
+                try: page.locator(".toast").first.wait_for(timeout=60000); toast = page.locator(".toast").first.inner_text()
+                except Exception: toast = ""
+                check("laptop: a new alert pops up while the page is open", "New alert" in toast, " ".join(toast.split())[:80])
+                page.screenshot(path=str(SHOTS / "laptop_admin_live_playing.png"), full_page=True)
+                page.click("button:has-text('Stop the demo')"); page.wait_for_timeout(800)
+                page.goto(a.url + "/app", wait_until="domcontentloaded"); page.get_by_text("Last message").first.wait_for(timeout=15000)
+                check("laptop: the dashboard shows the live status", page.locator(".live-pill").count() >= 1)
             check(f"{size}: no console errors", not errors, "; ".join(errors[:5]))
             ctx.close()
         browser.close()

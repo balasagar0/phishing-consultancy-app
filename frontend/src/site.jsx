@@ -85,19 +85,20 @@ export function HowItWorks() {
     <section className="section wrap stack">
       <h1>How it works</h1>
       <div className="steps">
-        <div className="card"><h3>Messages arrive</h3><p>Analysts paste suspicious messages, or a connector forwards them with an API key: a reporting mailbox, an SMS gateway, a SIEM.</p></div>
+        <div className="card"><h3>Messages arrive by themselves</h3><p>The service reads your reporting mailbox or a watched inbox as mail arrives (IMAP or Microsoft 365), and your SMS gateway and mail server push each message in. Nobody has to paste anything.</p></div>
         <div className="card"><h3>Each one is scored</h3><p>The email, SMS or URL detector gives a score from 0 to 1 and the words that moved it. Calls and video are stored but not scored.</p></div>
         <div className="card"><h3>Campaigns are linked</h3><p>A recipient's messages that fall in one time window are scored together, using shared domains and phone numbers and the timing.</p></div>
-        <div className="card"><h3>Your team acts</h3><p>A campaign that reaches the alert line opens one alert case. Analysts triage it, add notes, and export reports for the client.</p></div>
+        <div className="card"><h3>Your team acts at once</h3><p>A campaign that reaches the alert line opens one alert case, shown on every analyst's screen within seconds and sent to Slack or your SIEM if you wish. Analysts triage it and report.</p></div>
       </div>
       <div className="grid two">
         <div className="card">
           <h2>Ways to use it</h2>
           <ul>
-            <li><strong>Web app</strong>: scan a message, investigate a set of messages, work the alert queue.</li>
-            <li><strong>API</strong>: <code>POST /api/v1/events</code> with an organisation's key; pull alerts from <code>GET /api/v1/alerts</code>.</li>
-            <li><strong>Mail connector</strong>: a small script that reads a "report phishing" mailbox and sends each message in.</li>
-            <li><strong>Installable</strong>: add the app to a phone or desktop home screen from the browser.</li>
+            <li><strong>Mailbox connectors</strong>: the server reads a reporting mailbox or a watched inbox itself, over IMAP (with IDLE, so new mail is seen in seconds) or Microsoft 365. Read-only: it never changes the mailbox.</li>
+            <li><strong>Webhooks</strong>: an SMS gateway, a phone forwarding app or a mail server pushes each message in as it arrives.</li>
+            <li><strong>Live web app</strong>: a live feed of every message, alerts that appear by themselves, triage, campaigns and reports. Pasting a message by hand is still there for a quick check.</li>
+            <li><strong>API</strong>: <code>POST /api/v1/events</code> with an organisation's key; pull alerts from <code>GET /api/v1/alerts</code>, or receive them by alert webhook.</li>
+            <li><strong>Installable</strong>: add the app to a phone or desktop home screen from the browser, with desktop notifications for new alerts.</li>
           </ul>
         </div>
         <div className="card">
@@ -169,7 +170,8 @@ export function Privacy() {
         <div className="card"><h2>What never happens</h2>
           <ul>
             <li>No link in a message is opened, fetched or looked up.</li>
-            <li>No message is sent to an outside service or model provider.</li>
+            <li>No message is sent to an outside service or model provider. The server contacts only the mailboxes and webhook addresses your admin sets up.</li>
+            <li>Mailbox passwords and secrets are stored encrypted and never shown again; mailboxes are opened read-only.</li>
             <li>Nothing is used to train models without a separate written agreement.</li>
           </ul>
         </div>

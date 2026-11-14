@@ -1,7 +1,7 @@
 """The app's own database (accounts, organisations, API keys, alert triage, logs). Message events live in each organisation's own event store
 (engine.py), not here. SQLite by default; MCPD_DATABASE_URL can point to PostgreSQL. Times are epoch seconds (UTC)."""
 import time
-from sqlalchemy import Boolean, Float, ForeignKey, Integer, String, Text, UniqueConstraint, create_engine
+from sqlalchemy import Boolean, Float, ForeignKey, Integer, String, Text, UniqueConstraint, create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 from .config import get_settings
 
@@ -122,6 +122,76 @@ class AuditLog(Base):
     created_at: Mapped[float] = mapped_column(Float, default=now)
 
 
+class Connector(Base):
+    """A message source the server reads by itself (connectors.py): an IMAP mailbox, a Microsoft 365 mailbox through Microsoft Graph, or the
+    demo replay. Its password or client secret is stored encrypted (secretbox.py) and never returned by the API."""
+    __tablename__ = "connectors"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("orgs.id"), index=True)
+    kind: Mapped[str] = mapped_column(String(20))                        # imap, graph, demo
+    name: Mapped[str] = mapped_column(String(200))
+    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    config: Mapped[str] = mapped_column(Text, default="{}")              # JSON, never a secret
+    secret: Mapped[str] = mapped_column(Text, default="")                # encrypted
+    state: Mapped[str] = mapped_column(Text, default="{}")               # JSON: where reading got to
+    status: Mapped[str] = mapped_column(String(20), default="new")       # new, connecting, live, polling, error, paused, finished
+    detail: Mapped[str] = mapped_column(String(500), default="")         # last status line or error; never message content
+    last_checked_at: Mapped[float | None] = mapped_column(Float, nullable=True)
+    last_message_at: Mapped[float | None] = mapped_column(Float, nullable=True)
+    n_messages: Mapped[int] = mapped_column(Integer, default=0)
+    n_alerts: Mapped[int] = mapped_column(Integer, default=0)
+    n_skipped: Mapped[int] = mapped_column(Integer, default=0)
+    created_by: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    created_at: Mapped[float] = mapped_column(Float, default=now)
+    updated_at: Mapped[float] = mapped_column(Float, default=now)
+
+
+class MessageLog(Base):
+    """One row per message recorded, for the live feed: channel, score, source, campaign. Never the text. The recipient's name and the plain
+    indicators are kept only when the organisation keeps labels, as on alert cases."""
+    __tablename__ = "message_log"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("orgs.id"), index=True)
+    at: Mapped[float] = mapped_column(Float)                              # the message's time
+    received_at: Mapped[float] = mapped_column(Float, default=now)        # when the service recorded it
+    channel: Mapped[str] = mapped_column(String(20))
+    source: Mapped[str] = mapped_column(String(20))                       # mailbox, sms-hook, mail-hook, api, web, demo
+    origin: Mapped[str] = mapped_column(String(200), default="")          # the connector's or API key's name
+    recipient_label: Mapped[str] = mapped_column(String(320), default="")
+    recipient_ref: Mapped[str] = mapped_column(String(20), default="")
+    score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    label: Mapped[str] = mapped_column(String(40), default="")
+    assessed: Mapped[bool] = mapped_column(Boolean, default=True)
+    event_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    campaign_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    campaign_risk: Mapped[float | None] = mapped_column(Float, nullable=True)
+    indicators: Mapped[str] = mapped_column(Text, default="[]")
+
+
+class SeenMessage(Base):
+    """Keyed hashes of the emails already recorded, so a message read twice (a restart, a mailbox and a report) is counted once."""
+    __tablename__ = "seen_messages"
+    __table_args__ = (UniqueConstraint("org_id", "key"),)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("orgs.id"))
+    key: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[float] = mapped_column(Float, default=now)
+
+
+class AlertHook(Base):
+    """Where to POST a short notice when an alert opens (hooks_out.py). The signing secret is encrypted."""
+    __tablename__ = "alert_hooks"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("orgs.id"), unique=True)
+    url: Mapped[str] = mapped_column(String(1000))
+    secret: Mapped[str] = mapped_column(Text, default="")
+    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    last_status: Mapped[str] = mapped_column(String(300), default="")
+    last_at: Mapped[float | None] = mapped_column(Float, nullable=True)
+    n_sent: Mapped[int] = mapped_column(Integer, default=0)
+    n_failed: Mapped[int] = mapped_column(Integer, default=0)
+
+
 class Lead(Base):
     """A 'request a pilot' message from the public website."""
     __tablename__ = "leads"
@@ -138,8 +208,12 @@ _engine = _Session = None
 
 def init_db():
     global _engine, _Session
-    url = get_settings().database_url
-    _engine = create_engine(url, connect_args={"check_same_thread": False} if url.startswith("sqlite") else {}, pool_pre_ping=True)
+    url = get_settings().database_url; lite = url.startswith("sqlite")
+    _engine = create_engine(url, connect_args={"check_same_thread": False, "timeout": 30} if lite else {}, pool_pre_ping=True)
+    if lite:
+        @event.listens_for(_engine, "connect")
+        def _wal(conn, _):             # connector threads write while pages read: write-ahead logging lets readers carry on
+            cur = conn.cursor(); cur.execute("PRAGMA journal_mode=WAL"); cur.execute("PRAGMA busy_timeout=30000"); cur.close()
     Base.metadata.create_all(_engine)
     _Session = sessionmaker(bind=_engine, expire_on_commit=False)
     return _engine
