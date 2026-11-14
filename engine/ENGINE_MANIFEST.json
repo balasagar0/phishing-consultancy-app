@@ -1,0 +1,107 @@
+{
+ "source": "CP1 project (separate folder, read-only)",
+ "tag": "cp1-final",
+ "tag_commit": "18ba1d94b103ebeac3aefd775f4d9673c039b451",
+ "numbers_commit": "191e3356f5b79d2614b94d4c43f75a0a22a9b42f",
+ "synced_at": "2026-11-14T11:02:19+05:30",
+ "files": {
+  "api.py": {
+   "bytes": 12869,
+   "sha256": "eb42dfab16cd9c78e632b940dc5803dc514540264e401a3d1ce3648951983d93"
+  },
+  "models/email_model.joblib": {
+   "bytes": 1025925,
+   "sha256": "b8f8ea9f4434fa1118f0635d2815cc28ad850e6ffcbf64b97e16da4c8b1802fe"
+  },
+  "models/fusion_model.joblib": {
+   "bytes": 102941,
+   "sha256": "179294b428e3ab52fce6184b6ac75d41cc861325afdef21d90c0f63668953d7c"
+  },
+  "models/sms_model.joblib": {
+   "bytes": 1251345,
+   "sha256": "34f5ad3b99326dd6b1356205fd40c692f8c8ee631326e21aa598fbdd581a19e0"
+  },
+  "models/url_string_model.joblib": {
+   "bytes": 8804335,
+   "sha256": "466e710ab3f212abfd29ecd97faff4f0894e81c6adfb6124edf76aa0aed841bc"
+  },
+  "requirements.txt": {
+   "bytes": 407,
+   "sha256": "7d113dae7234409e0c750a01af0b169fb29c43a23373dfe92b8472acca4cb807"
+  },
+  "src/common.py": {
+   "bytes": 4983,
+   "sha256": "aeb5440198c8b5a593fcdc5a4dcabe27e412d16776c6d988bde0f11870b5569d"
+  },
+  "src/demo_cases.py": {
+   "bytes": 7414,
+   "sha256": "7fdb018fb7fed81344cfb2570701caff0fa6b453f0213336d871fa7da70fae21"
+  },
+  "src/event_store.py": {
+   "bytes": 12803,
+   "sha256": "bdaf9ba530d2a3757554860940d71d2a1310fc7948089f1d1b1871503daf00ce"
+  },
+  "src/fusion.py": {
+   "bytes": 9593,
+   "sha256": "b48efbacea0d5c8911f6310996b0d8774ef3e91dff149547aa106514092cea3e"
+  },
+  "src/predict.py": {
+   "bytes": 8584,
+   "sha256": "d196b6d5655731e24ffa4d11a7e84f37afa5e2c44f582d093ac30efc80e55883"
+  },
+  "src/url_features.py": {
+   "bytes": 5073,
+   "sha256": "4d1360f823f8dfcd28543547bdd1826b68ef28dc19f2a3ea33d1b0c4a681f14f"
+  },
+  "tests/test_demo_cases.py": {
+   "bytes": 3763,
+   "sha256": "4dd8b4d744ce515c3413e324aeda612ecd555d4890f2d6c0b6e18456150fd775"
+  },
+  "final_numbers.json": {
+   "bytes": 67339,
+   "sha256": "838e7fa5c75bd9213a97452f1528b1bb1d707d8f047f4fbb6ed28a03012cc2b3"
+  }
+ },
+ "tag_model_manifest": {
+  "written": "2026-11-02T10:31:13+05:30",
+  "n_files": 7,
+  "total_bytes": 15795536,
+  "files": [
+   {
+    "file": "models/email_model.joblib",
+    "bytes": 1025925,
+    "sha256": "b8f8ea9f4434fa1118f0635d2815cc28ad850e6ffcbf64b97e16da4c8b1802fe"
+   },
+   {
+    "file": "models/email_model_plain.joblib",
+    "bytes": 3972635,
+    "sha256": "6d4bbced6ecd71581bf3769065bf12398b0c19377467dfe3c0c7615e3f415887"
+   },
+   {
+    "file": "models/fusion_model.joblib",
+    "bytes": 102941,
+    "sha256": "179294b428e3ab52fce6184b6ac75d41cc861325afdef21d90c0f63668953d7c"
+   },
+   {
+    "file": "models/sms_model.joblib",
+    "bytes": 1251345,
+    "sha256": "34f5ad3b99326dd6b1356205fd40c692f8c8ee631326e21aa598fbdd581a19e0"
+   },
+   {
+    "file": "models/url_features_all_features.joblib",
+    "bytes": 259098,
+    "sha256": "c70a746d0b22df78c8cbca61cb54129f11314b966e5a92311bf729d8fab7a55e"
+   },
+   {
+    "file": "models/url_features_lexical_only.joblib",
+    "bytes": 379257,
+    "sha256": "e4eb1ac5379dea6c6ee3af08a1c0e23e47317de414ff8911b19aeaae602d4db1"
+   },
+   {
+    "file": "models/url_string_model.joblib",
+    "bytes": 8804335,
+    "sha256": "466e710ab3f212abfd29ecd97faff4f0894e81c6adfb6124edf76aa0aed841bc"
+   }
+  ]
+ }
+}

@@ -1,0 +1,2384 @@
+{
+ "date": "2026-11-14T10:59:00+05:30",
+ "build": {
+  "tag": "cp1-final",
+  "commit": "18ba1d94b103ebeac3aefd775f4d9673c039b451",
+  "commit7": "18ba1d9",
+  "tag_date": "07 Nov 2026",
+  "head": "bbb67c2",
+  "runtime_paths": [
+   "api.py",
+   "src",
+   "models",
+   "console/dist",
+   "console.html",
+   "requirements.txt",
+   "requirements.lock.txt"
+  ]
+ },
+ "values": {
+  "build.tag": "cp1-final",
+  "build.commit": "18ba1d94b103ebeac3aefd775f4d9673c039b451",
+  "build.commit7": "18ba1d9",
+  "build.tag_date": "07 Nov 2026",
+  "build.head": "bbb67c2",
+  "window.minutes": "60",
+  "window.file_line": "src/fusion.py:13",
+  "alert_line": "0.5",
+  "window.used_at": "`src/eval_comparison.py:40`, `src/eval_comparison.py:61`, `src/eval_window.py:39`, `src/fusion.py:59`, `src/fusion.py:71`, `src/fusion.py:143`",
+  "email.n": "72,428",
+  "email.n_before": "83,043",
+  "email.corpora": "CEAS_08, Enron, FraudEmail",
+  "email.n_corpora": "3",
+  "email.kept_terms": "49,011",
+  "email.candidate_terms": "400,000",
+  "email.chosen_C": "16",
+  "email.loco.CEAS_08.precision": "77.7%",
+  "email.loco.CEAS_08.recall": "96.5%",
+  "email.loco.CEAS_08.f1": "86.1%",
+  "email.loco.CEAS_08.fpr": "28.0%",
+  "email.loco.CEAS_08.accuracy": "84.3%",
+  "email.loco.CEAS_08.auc": "0.9419",
+  "email.loco.CEAS_08.n": "34,294",
+  "email.loco.CEAS_08.positives": "17,248",
+  "email.loco.CEAS_08.tn": "12,281",
+  "email.loco.CEAS_08.fp": "4,765",
+  "email.loco.CEAS_08.fn": "609",
+  "email.loco.CEAS_08.tp": "16,639",
+  "email.loco.Enron.precision": "97.1%",
+  "email.loco.Enron.recall": "61.0%",
+  "email.loco.Enron.f1": "74.9%",
+  "email.loco.Enron.fpr": "1.8%",
+  "email.loco.Enron.accuracy": "79.6%",
+  "email.loco.Enron.auc": "0.9470",
+  "email.loco.Enron.n": "28,917",
+  "email.loco.Enron.positives": "14,432",
+  "email.loco.Enron.tn": "14,224",
+  "email.loco.Enron.fp": "261",
+  "email.loco.Enron.fn": "5,627",
+  "email.loco.Enron.tp": "8,805",
+  "email.loco.FraudEmail.precision": "77.7%",
+  "email.loco.FraudEmail.recall": "95.4%",
+  "email.loco.FraudEmail.f1": "85.7%",
+  "email.loco.FraudEmail.fpr": "22.2%",
+  "email.loco.FraudEmail.accuracy": "85.7%",
+  "email.loco.FraudEmail.auc": "0.9634",
+  "email.loco.FraudEmail.n": "9,217",
+  "email.loco.FraudEmail.positives": "4,126",
+  "email.loco.FraudEmail.tn": "3,961",
+  "email.loco.FraudEmail.fp": "1,130",
+  "email.loco.FraudEmail.fn": "189",
+  "email.loco.FraudEmail.tp": "3,937",
+  "email.honest.f1": "82.2%",
+  "email.honest.fpr_range": "1.8% to 28.0%",
+  "email.honest.recall_range": "61.0% to 96.5%",
+  "email.honest.auc_range": "0.94 to 0.96",
+  "email.flattering.precision": "98.7%",
+  "email.flattering.recall": "98.8%",
+  "email.flattering.f1": "98.8%",
+  "email.flattering.fpr": "1.3%",
+  "email.flattering.accuracy": "98.8%",
+  "email.flattering.auc": "0.9992",
+  "email.flattering.n": "7,243",
+  "email.flattering.positives": "3,581",
+  "email.flattering.tn": "3,616",
+  "email.flattering.fp": "46",
+  "email.flattering.fn": "43",
+  "email.flattering.tp": "3,538",
+  "email.flattering.f1_ci": "98.5%-99.0%",
+  "email.flattering.f1_ci_low": "98.5%",
+  "email.flattering.f1_ci_high": "99.0%",
+  "email.realmail.n": "4,069",
+  "email.realmail.fpr": "23.5%",
+  "email.generatedlegit.n": "2,104",
+  "email.generatedlegit.fpr": "21.6%",
+  "email.retrain_attempts": "3",
+  "sms.n": "5,789",
+  "sms.count.ham": "4,829",
+  "sms.count.spam": "433",
+  "sms.count.smishing": "527",
+  "sms.test_n": "1,158",
+  "sms.smishing_support": "105",
+  "sms.honest.precision": "90.7%",
+  "sms.honest.recall": "83.8%",
+  "sms.honest.f1": "87.1%",
+  "sms.honest.fpr": "0.9%",
+  "sms.honest.accuracy": "97.8%",
+  "sms.honest.auc": "0.9851",
+  "sms.honest.n": "1,158",
+  "sms.honest.positives": "105",
+  "sms.honest.tn": "1,044",
+  "sms.honest.fp": "9",
+  "sms.honest.fn": "17",
+  "sms.honest.tp": "88",
+  "sms.honest.f1_ci": "82.3%-91.7%",
+  "sms.honest.f1_ci_low": "82.3%",
+  "sms.honest.f1_ci_high": "91.7%",
+  "sms.flattering.precision": "99.5%",
+  "sms.flattering.recall": "96.9%",
+  "sms.flattering.f1": "98.2%",
+  "sms.flattering.fpr": "0.1%",
+  "sms.flattering.accuracy": "99.4%",
+  "sms.flattering.auc": "0.9964",
+  "sms.flattering.n": "1,158",
+  "sms.flattering.positives": "192",
+  "sms.flattering.tn": "965",
+  "sms.flattering.fp": "1",
+  "sms.flattering.fn": "6",
+  "sms.flattering.tp": "186",
+  "sms.flattering.f1_ci": "96.7%-99.3%",
+  "sms.flattering.f1_ci_low": "96.7%",
+  "sms.flattering.f1_ci_high": "99.3%",
+  "sms.macro_f1_3class": "89.7%",
+  "url.n": "260,000",
+  "url.hosts": "101,523",
+  "url.train": "204,817",
+  "url.test": "55,183",
+  "url.popular_domains": "10,000",
+  "url.honest.precision": "96.1%",
+  "url.honest.recall": "85.4%",
+  "url.honest.f1": "90.4%",
+  "url.honest.fpr": "0.6%",
+  "url.honest.accuracy": "97.4%",
+  "url.honest.auc": "0.9848",
+  "url.honest.n": "55,183",
+  "url.honest.positives": "7,956",
+  "url.honest.tn": "46,950",
+  "url.honest.fp": "277",
+  "url.honest.fn": "1,160",
+  "url.honest.tp": "6,796",
+  "url.honest.f1_ci": "90.0%-90.9%",
+  "url.honest.f1_ci_low": "90.0%",
+  "url.honest.f1_ci_high": "90.9%",
+  "url.flattering.precision": "95.4%",
+  "url.flattering.recall": "95.4%",
+  "url.flattering.f1": "95.4%",
+  "url.flattering.fpr": "2.5%",
+  "url.flattering.accuracy": "96.8%",
+  "url.flattering.auc": "0.9943",
+  "url.flattering.n": "17,440",
+  "url.flattering.positives": "6,098",
+  "url.flattering.tn": "11,060",
+  "url.flattering.fp": "282",
+  "url.flattering.fn": "279",
+  "url.flattering.tp": "5,819",
+  "url.flattering.n_features": "111",
+  "url.login_fpr.before": "92.2%",
+  "url.login_fpr.after": "0.0%",
+  "url.popular_recall.before": "49.9%",
+  "url.popular_recall.after": "30.7%",
+  "url.popular_recall.n": "381",
+  "url.brand_probes.before": "99.4%",
+  "url.brand_probes.after": "95.3%",
+  "corr.n_train": "24,000",
+  "corr.n_val": "8,000",
+  "corr.n_test": "12,000",
+  "corr.malicious_share": "49.6%",
+  "corr.single.precision": "87.0%",
+  "corr.single.recall": "95.3%",
+  "corr.single.f1": "91.0%",
+  "corr.single.fpr": "14.1%",
+  "corr.single.f1_ci": "90.4%-91.4%",
+  "corr.single.fpr_ci": "13.2%-15.1%",
+  "corr.single.hard_flagged": "0.0%",
+  "corr.parallel.precision": "97.0%",
+  "corr.parallel.recall": "92.2%",
+  "corr.parallel.f1": "94.5%",
+  "corr.parallel.fpr": "2.8%",
+  "corr.parallel.f1_ci": "94.2%-94.9%",
+  "corr.parallel.fpr_ci": "2.5%-3.3%",
+  "corr.parallel.hard_flagged": "11.1%",
+  "corr.whole.precision": "97.0%",
+  "corr.whole.recall": "92.9%",
+  "corr.whole.f1": "94.9%",
+  "corr.whole.fpr": "2.8%",
+  "corr.whole.f1_ci": "94.6%-95.3%",
+  "corr.whole.fpr_ci": "2.5%-3.2%",
+  "corr.whole.hard_flagged": "18.5%",
+  "corr.engine.precision": "89.4%",
+  "corr.engine.recall": "94.9%",
+  "corr.engine.f1": "92.0%",
+  "corr.engine.fpr": "11.1%",
+  "corr.engine.f1_ci": "91.5%-92.5%",
+  "corr.engine.fpr_ci": "10.3%-11.9%",
+  "corr.engine.hard_flagged": "18.5%",
+  "corr.nowindow.precision": "96.8%",
+  "corr.nowindow.recall": "93.0%",
+  "corr.nowindow.f1": "94.8%",
+  "corr.nowindow.fpr": "3.0%",
+  "corr.hard.n": "27",
+  "corr.hard.share": "0.8%",
+  "corr.fit60": "95.6%",
+  "corr.auc.single": "0.9746",
+  "corr.auc.nocorr": "0.9847",
+  "corr.auc.fusion": "0.9874",
+  "corr.patent_row": "not evaluated: the owner decided on 7 Nov 2026 that the patent will be written from this build; the old draft's noisy-OR method and its generated numbers are not used",
+  "corr.real_bundles": "blocked on R2-10: 0 real bundles collected",
+  "corr.n_features": "15",
+  "corr.features": "`n_events`, `n_channels`, `max_logit`, `mean_logit`, `min_logit`, `email_logit`, `sms_logit`, `url_logit`, `has_email`, `has_sms`, `has_url`, `shares_identity`, `n_shared_identities`, `frac_events_linked`, `log_time_span_min`",
+  "corr.n_link_features": "4",
+  "corr.link_features": "`shares_identity`, `n_shared_identities`, `frac_events_linked`, `log_time_span_min`",
+  "sim.mix.attack_linked": "30.0%",
+  "sim.mix.attack_single": "10.0%",
+  "sim.mix.mixed_unlinked": "10.0%",
+  "sim.mix.benign_linked": "20.0%",
+  "sim.mix.benign_unlinked": "30.0%",
+  "sim.assume.label": "1 if any event in the bundle is truly malicious (attack_linked, attack_single, mixed_unlinked), else 0",
+  "sim.assume.attack_linked": "2-3 malicious events on different channels, shared identity, gaps ~ Exponential(mean 15 min); each event's identity observed with prob 0.85",
+  "sim.assume.benign_linked": "2-3 benign events on different channels, shared identity, gaps Exponential with mean 30 min (50%) or 6 h (50%)",
+  "sim.assume.unlinked_bundles": "events with distinct identities, times uniform over 72 h; with prob 0.08 a spurious shared identity is added",
+  "sim.assume.scores": "each event gets the real held-out score of a randomly drawn real message of the right class and channel",
+  "url.constructed.train_login_urls": "12,000",
+  "url.constructed.held_out_domain_login_urls": "3,000",
+  "url.constructed.brand_impersonation_probes": "2,000",
+  "sms.chosen_C": "128",
+  "email.split.train": "57,942",
+  "email.split.val": "7,243",
+  "email.split.test": "7,243",
+  "finalrun.build": "cp1-rc1",
+  "finalrun.tc06.live": "0.595",
+  "finalrun.tc06.retrained": "0.456",
+  "finalrun.tc06.live_corr_new_det": "0.595",
+  "finalrun.email_f1.live": "82.2%",
+  "finalrun.email_f1.retrained": "82.1%",
+  "finalrun.sim_f1.live": "92.0%",
+  "finalrun.sim_f1.retrained": "92.1%",
+  "demo.TC-01.name": "Phishing email alone",
+  "demo.TC-01.status": "ASSESSED",
+  "demo.TC-01.scores": "0.998",
+  "demo.TC-01.bundle": "0.998",
+  "demo.TC-01.alone": "yes",
+  "demo.TC-01.alert": "alert",
+  "demo.TC-02.name": "Smishing SMS alone",
+  "demo.TC-02.status": "ASSESSED",
+  "demo.TC-02.scores": "1.000",
+  "demo.TC-02.bundle": "1.000",
+  "demo.TC-02.alone": "yes",
+  "demo.TC-02.alert": "alert",
+  "demo.TC-03.name": "Voice call (not assessed: no voice detector)",
+  "demo.TC-03.status": "CANNOT_ASSESS",
+  "demo.TC-03.scores": "not assessed",
+  "demo.TC-03.bundle": "CANNOT_ASSESS",
+  "demo.TC-03.alone": "not assessed",
+  "demo.TC-03.alert": "not assessed",
+  "demo.TC-04.name": "SMS + URL + email on one domain, 12 min",
+  "demo.TC-04.status": "ASSESSED",
+  "demo.TC-04.scores": "1.000 / 0.995 / 0.998",
+  "demo.TC-04.bundle": "1.000",
+  "demo.TC-04.alone": "yes",
+  "demo.TC-04.alert": "alert",
+  "demo.TC-05.name": "A colleague shares an article, 10 min",
+  "demo.TC-05.status": "ASSESSED",
+  "demo.TC-05.scores": "0.002 / 0.000 / 0.000",
+  "demo.TC-05.bundle": "0.000",
+  "demo.TC-05.alone": "no",
+  "demo.TC-05.alert": "no alert",
+  "demo.TC-06.name": "Weak parcel campaign, 15 min",
+  "demo.TC-06.status": "ASSESSED",
+  "demo.TC-06.scores": "0.421 / 0.451 / 0.204",
+  "demo.TC-06.bundle": "0.595",
+  "demo.TC-06.alone": "no",
+  "demo.TC-06.alert": "alert",
+  "demo.TC-07.name": "TC-06's messages, 3 days apart",
+  "demo.TC-07.status": "ASSESSED",
+  "demo.TC-07.scores": "0.421 / 0.451 / 0.204",
+  "demo.TC-07.bundle": "0.451",
+  "demo.TC-07.alone": "no",
+  "demo.TC-07.alert": "no alert",
+  "demo.TC-08.name": "Courier SMS + email sharing a tracking number",
+  "demo.TC-08.status": "ASSESSED",
+  "demo.TC-08.scores": "0.970 / 0.031",
+  "demo.TC-08.bundle": "1.000",
+  "demo.TC-08.alone": "yes",
+  "demo.TC-08.alert": "alert",
+  "demo.IN-01.name": "KYC freeze (SMS, link, call)",
+  "demo.IN-01.status": "ASSESSED",
+  "demo.IN-01.scores": "1.000 / 0.927 / not assessed",
+  "demo.IN-01.bundle": "1.000",
+  "demo.IN-01.alone": "yes",
+  "demo.IN-01.alert": "alert",
+  "demo.IN-02.name": "Courier customs fee (SMS, email, link)",
+  "demo.IN-02.status": "ASSESSED",
+  "demo.IN-02.scores": "0.927 / 0.437 / 0.988",
+  "demo.IN-02.bundle": "1.000",
+  "demo.IN-02.alone": "yes",
+  "demo.IN-02.alert": "alert",
+  "demo.IN-03.name": "Work-from-home task scam (SMS, email)",
+  "demo.IN-03.status": "ASSESSED",
+  "demo.IN-03.scores": "0.736 / 0.479",
+  "demo.IN-03.bundle": "0.999",
+  "demo.IN-03.alone": "yes",
+  "demo.IN-03.alert": "alert",
+  "demo.IN-04.name": "Legitimate order (should stay quiet)",
+  "demo.IN-04.status": "ASSESSED",
+  "demo.IN-04.scores": "0.412 / 0.400 / 0.005",
+  "demo.IN-04.bundle": "0.053",
+  "demo.IN-04.alone": "no",
+  "demo.IN-04.alert": "no alert",
+  "tests.pytest.passed": "180",
+  "tests.pytest.xfailed": "7",
+  "tests.pytest.skipped": "1",
+  "tests.pytest.failed": "0",
+  "tests.pytest.total": "188",
+  "tests.smoke.passed": "24",
+  "tests.smoke.skipped": "1",
+  "tests.smoke.failed": "0",
+  "tests.cases.total": "112",
+  "tests.cases.fail": "7",
+  "tests.cases.known_limitation": "1",
+  "tests.cases.na": "12",
+  "tests.cases.pass": "92",
+  "tests.cases.tag.na": "12",
+  "tests.cases.tag.ported": "44",
+  "tests.cases.tag.replaced": "56",
+  "tests.cases.build": "cp1-final",
+  "tests.samples.n": "96",
+  "tests.scenarios.n": "13",
+  "tests.exit.met": "4",
+  "tests.exit.of": "8",
+  "tests.exit.1": "met: 0 not run",
+  "tests.exit.1.current": "0 not run",
+  "tests.exit.2": "met: 95.4% (83 pass, 4 fail)",
+  "tests.exit.2.current": "95.4% (83 pass, 4 fail)",
+  "tests.exit.3": "not met: 8 of 12",
+  "tests.exit.3.current": "8 of 12",
+  "tests.exit.4a": "met: 3 of 3",
+  "tests.exit.4a.current": "3 of 3",
+  "tests.exit.4b": "not met: 1 of 3",
+  "tests.exit.4b.current": "1 of 3",
+  "tests.exit.5": "not met: Fail",
+  "tests.exit.5.current": "Fail",
+  "tests.exit.6": "met: 2 of 2",
+  "tests.exit.6.current": "2 of 2",
+  "tests.exit.7": "not met: 3",
+  "tests.exit.7.current": "3",
+  "tests.e2e.steps": "10",
+  "tests.e2e.passed": "10",
+  "tests.ui.n": "7",
+  "tests.ui.passed": "6",
+  "tests.ui.failed": "UI-03",
+  "tests.offline": "pass",
+  "tests.nfr05": "Pass",
+  "defects.total": "18",
+  "defects.open": "7",
+  "defects.closed": "11",
+  "defects.open_list": "D-01 (High), D-09 (High), D-10 (Medium), D-12 (Medium), D-16 (Medium), D-17 (High), D-18 (Low)",
+  "defects.closed_list": "D-02, D-03, D-04, D-05, D-06, D-07, D-08, D-11, D-13, D-14, D-15",
+  "latency.email.median": "23 ms",
+  "latency.email.p95": "39 ms",
+  "latency.email.max": "138 ms",
+  "latency.sms.median": "12 ms",
+  "latency.sms.p95": "14 ms",
+  "latency.sms.max": "16 ms",
+  "latency.url.median": "6 ms",
+  "latency.url.p95": "8 ms",
+  "latency.url.max": "10 ms",
+  "latency.case.median": "67 ms",
+  "latency.case.p95": "89 ms",
+  "latency.case.max": "1970 ms",
+  "latency.n": "100",
+  "latency.startup": "8.2 s",
+  "latency.machine": "AMD Ryzen 7 5800HS with Radeon Graphics (16 logical CPUs), 15.4 GB RAM, Windows-11-10.0.26200-SP0, Python 3.13.0",
+  "latency.demo_laptop": "not confirmed: Viraj confirms whether this is the demo laptop, or re-runs this script on it (R3-10)",
+  "review3.n": "31",
+  "review3.same": "31"
+ },
+ "demo": [
+  {
+   "id": "TC-01",
+   "kind": "demo case",
+   "name": "Phishing email alone",
+   "status": "ASSESSED",
+   "channels": [
+    "email"
+   ],
+   "event_scores": [
+    0.998
+   ],
+   "single_channel_alert": true,
+   "bundle_risk": 0.998,
+   "alert": true
+  },
+  {
+   "id": "TC-02",
+   "kind": "demo case",
+   "name": "Smishing SMS alone",
+   "status": "ASSESSED",
+   "channels": [
+    "sms"
+   ],
+   "event_scores": [
+    1.0
+   ],
+   "single_channel_alert": true,
+   "bundle_risk": 1.0,
+   "alert": true
+  },
+  {
+   "id": "TC-03",
+   "kind": "demo case",
+   "name": "Voice call (not assessed: no voice detector)",
+   "status": "CANNOT_ASSESS",
+   "channels": [
+    "call"
+   ],
+   "event_scores": [
+    null
+   ],
+   "single_channel_alert": null,
+   "bundle_risk": null,
+   "alert": false
+  },
+  {
+   "id": "TC-04",
+   "kind": "demo case",
+   "name": "SMS + URL + email on one domain, 12 min",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "url",
+    "email"
+   ],
+   "event_scores": [
+    1.0,
+    0.995,
+    0.998
+   ],
+   "single_channel_alert": true,
+   "bundle_risk": 1.0,
+   "alert": true
+  },
+  {
+   "id": "TC-05",
+   "kind": "demo case",
+   "name": "A colleague shares an article, 10 min",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "email",
+    "url"
+   ],
+   "event_scores": [
+    0.002,
+    0.0,
+    0.0
+   ],
+   "single_channel_alert": false,
+   "bundle_risk": 0.0,
+   "alert": false
+  },
+  {
+   "id": "TC-06",
+   "kind": "demo case",
+   "name": "Weak parcel campaign, 15 min",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "url",
+    "email"
+   ],
+   "event_scores": [
+    0.421,
+    0.451,
+    0.204
+   ],
+   "single_channel_alert": false,
+   "bundle_risk": 0.595,
+   "alert": true
+  },
+  {
+   "id": "TC-07",
+   "kind": "demo case",
+   "name": "TC-06's messages, 3 days apart",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "url",
+    "email"
+   ],
+   "event_scores": [
+    0.421,
+    0.451,
+    0.204
+   ],
+   "single_channel_alert": false,
+   "bundle_risk": 0.451,
+   "alert": false
+  },
+  {
+   "id": "TC-08",
+   "kind": "demo case",
+   "name": "Courier SMS + email sharing a tracking number",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "email"
+   ],
+   "event_scores": [
+    0.97,
+    0.031
+   ],
+   "single_channel_alert": true,
+   "bundle_risk": 1.0,
+   "alert": true
+  },
+  {
+   "id": "IN-01",
+   "kind": "Indian story",
+   "name": "KYC freeze (SMS, link, call)",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "url",
+    "call"
+   ],
+   "event_scores": [
+    1.0,
+    0.927,
+    null
+   ],
+   "single_channel_alert": true,
+   "bundle_risk": 1.0,
+   "alert": true
+  },
+  {
+   "id": "IN-02",
+   "kind": "Indian story",
+   "name": "Courier customs fee (SMS, email, link)",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "email",
+    "url"
+   ],
+   "event_scores": [
+    0.927,
+    0.437,
+    0.988
+   ],
+   "single_channel_alert": true,
+   "bundle_risk": 1.0,
+   "alert": true
+  },
+  {
+   "id": "IN-03",
+   "kind": "Indian story",
+   "name": "Work-from-home task scam (SMS, email)",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "email"
+   ],
+   "event_scores": [
+    0.736,
+    0.479
+   ],
+   "single_channel_alert": true,
+   "bundle_risk": 0.999,
+   "alert": true
+  },
+  {
+   "id": "IN-04",
+   "kind": "Indian story",
+   "name": "Legitimate order (should stay quiet)",
+   "status": "ASSESSED",
+   "channels": [
+    "sms",
+    "email",
+    "url"
+   ],
+   "event_scores": [
+    0.412,
+    0.4,
+    0.005
+   ],
+   "single_channel_alert": false,
+   "bundle_risk": 0.053,
+   "alert": false
+  }
+ ],
+ "tests": {
+  "date": "2026-11-07T17:49:06+05:30",
+  "build": {
+   "tag": "cp1-final",
+   "commit": "18ba1d94b103ebeac3aefd775f4d9673c039b451"
+  },
+  "pytest": {
+   "passed": 180,
+   "failed": 0,
+   "error": 0,
+   "skipped": 1,
+   "xfailed": 7,
+   "xpassed": 0
+  },
+  "pytest_note": "pytest tests, except tests/test_documents.py (it checks the documents this script feeds)",
+  "smoke": {
+   "pass": 24,
+   "skip": 1,
+   "fail": 0,
+   "all_passed": true
+  }
+ },
+ "retired_search": {
+  "searched_files": 199,
+  "hits": [
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "CLAUDE.md",
+    "line": 23,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "CLAUDE.md",
+    "line": 23,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "CLAUDE.md",
+    "line": 23,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "CLAUDE.md",
+    "line": 227,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "CLAUDE.md",
+    "line": 20,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "CLAUDE.md",
+    "line": 227,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "CLAUDE.md",
+    "line": 242,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "CLAUDE.md",
+    "line": 19,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "CLAUDE.md",
+    "line": 227,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'linear SVM' (TRAINING_REPORT.md)",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'460 campaigns'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'22 of 60'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'32 of 60'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 72,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 72,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 87,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'50-minute window'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 87.8",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 85.6",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "voice ROC-AUC 0.952",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 72,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "CP1_FINISH_TASK.md",
+    "line": 252,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "TESTCASE_FORMAT.md",
+    "line": 55,
+    "origin": "received with v2, unchanged",
+    "verdict": "received, not edited"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 165,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 186,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 195,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 218,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 220,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 226,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 232,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 235,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 237,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 166,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 187,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 196,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 221,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 223,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 225,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 228,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 229,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 231,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 233,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 236,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 239,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 167,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 188,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 197,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 168,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 198,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 216,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 217,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 222,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 224,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 227,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 230,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 234,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 238,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'linear SVM' (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 169,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'linear SVM' (TRAINING_REPORT.md)",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 199,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'460 campaigns'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 170,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'460 campaigns'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 200,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 171,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 201,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 219,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'22 of 60'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 172,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'22 of 60'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 202,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'32 of 60'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 173,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'32 of 60'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 203,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 174,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 189,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 204,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 205,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 147,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 175,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 190,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 191,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 192,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 206,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 207,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 208,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 215,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'50-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 176,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'50-minute window'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 209,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 87.8",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 177,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 87.8",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 210,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 85.6",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 178,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 85.6",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 211,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "voice ROC-AUC 0.952",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 179,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "voice ROC-AUC 0.952",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 212,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 180,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 193,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 194,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 213,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/FINAL_NUMBERS.md",
+    "line": 214,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/baseline_check.md",
+    "line": 107,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/baseline_check.md",
+    "line": 116,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/candidates/email_candidates.json",
+    "line": 20,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "reports/candidates/email_candidates_attempt2.md",
+    "line": 22,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/email_metrics.json",
+    "line": 208,
+    "origin": "received with v2, unchanged",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 624,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 687,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 848,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 862,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 904,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 946,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 967,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 981,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 1004,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 631,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 694,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 869,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 883,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 897,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 918,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 925,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 939,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 953,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 974,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 995,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 1005,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 638,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 701,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "reports/final_numbers.json",
+    "line": 1006,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 708,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 834,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 841,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 876,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 890,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 911,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 932,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 960,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 988,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 1007,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'linear SVM' (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 715,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'linear SVM' (TRAINING_REPORT.md)",
+    "file": "reports/final_numbers.json",
+    "line": 1008,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'460 campaigns'",
+    "file": "reports/final_numbers.json",
+    "line": 722,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'460 campaigns'",
+    "file": "reports/final_numbers.json",
+    "line": 1009,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "reports/final_numbers.json",
+    "line": 729,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "reports/final_numbers.json",
+    "line": 855,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "reports/final_numbers.json",
+    "line": 1010,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'22 of 60'",
+    "file": "reports/final_numbers.json",
+    "line": 736,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'22 of 60'",
+    "file": "reports/final_numbers.json",
+    "line": 1011,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'32 of 60'",
+    "file": "reports/final_numbers.json",
+    "line": 743,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'32 of 60'",
+    "file": "reports/final_numbers.json",
+    "line": 1012,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/final_numbers.json",
+    "line": 645,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/final_numbers.json",
+    "line": 750,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/final_numbers.json",
+    "line": 757,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "reports/final_numbers.json",
+    "line": 1013,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 652,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 659,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 666,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 764,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 771,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 778,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 827,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 1014,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'50-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 785,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'50-minute window'",
+    "file": "reports/final_numbers.json",
+    "line": 1015,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 87.8",
+    "file": "reports/final_numbers.json",
+    "line": 792,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 87.8",
+    "file": "reports/final_numbers.json",
+    "line": 1016,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 85.6",
+    "file": "reports/final_numbers.json",
+    "line": 799,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 85.6",
+    "file": "reports/final_numbers.json",
+    "line": 1017,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "voice ROC-AUC 0.952",
+    "file": "reports/final_numbers.json",
+    "line": 806,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "voice ROC-AUC 0.952",
+    "file": "reports/final_numbers.json",
+    "line": 1018,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/final_numbers.json",
+    "line": 673,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/final_numbers.json",
+    "line": 680,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/final_numbers.json",
+    "line": 813,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/final_numbers.json",
+    "line": 820,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "reports/final_numbers.json",
+    "line": 1019,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_run/comparison_metrics.json",
+    "line": 41,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_run/email_metrics_plain.json",
+    "line": 198,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_run/log_comparison.txt",
+    "line": 2,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_run/log_email_plain.txt",
+    "line": 16,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_run/log_url.txt",
+    "line": 10,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_run/results.md",
+    "line": 28,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_run/results.md",
+    "line": 62,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_run/run_all_log.txt",
+    "line": 58,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_run/run_all_log.txt",
+    "line": 91,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_run/run_all_log.txt",
+    "line": 17,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_run/url_metrics.json",
+    "line": 193,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/final_run_check.md",
+    "line": 238,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/final_run_check.md",
+    "line": 538,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/final_run_check.md",
+    "line": 419,
+    "origin": "written in the CP1 finish work",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/log_email.txt",
+    "line": 14,
+    "origin": "received with v2, unchanged",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/log_url.txt",
+    "line": 10,
+    "origin": "received with v2, unchanged",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "reports/results.md",
+    "line": 28,
+    "origin": "received with v2, regenerated since",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "reports/results.md",
+    "line": 62,
+    "origin": "received with v2, regenerated since",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "reports/url_metrics.json",
+    "line": 193,
+    "origin": "received with v2, unchanged",
+    "verdict": "written by code: a different measured value with the same digits, not the retired claim"
+   },
+   {
+    "number": "email F1 0.947 (Review-2 deck)",
+    "file": "scripts/make_final_numbers.py",
+    "line": 19,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "SMS F1 0.926 (Review-2 deck)",
+    "file": "scripts/make_final_numbers.py",
+    "line": 19,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "URL F1 0.960 (Review-2 deck)",
+    "file": "scripts/make_final_numbers.py",
+    "line": 20,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "F1 0.991 (TRAINING_REPORT.md)",
+    "file": "scripts/make_final_numbers.py",
+    "line": 20,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'linear SVM' (TRAINING_REPORT.md)",
+    "file": "scripts/make_final_numbers.py",
+    "line": 21,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'460 campaigns'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 21,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'460 campaigns'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 21,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'80.0% -> 84.5%'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 22,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'22 of 60'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 22,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'32 of 60'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 22,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'142 cases'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 23,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 23,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'30-minute window'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 352,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'50-minute window'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 24,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 87.8",
+    "file": "scripts/make_final_numbers.py",
+    "line": 24,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "quiet-attack demo score 85.6",
+    "file": "scripts/make_final_numbers.py",
+    "line": 25,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "voice ROC-AUC 0.952",
+    "file": "scripts/make_final_numbers.py",
+    "line": 25,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   },
+   {
+    "number": "'19 routes'",
+    "file": "scripts/make_final_numbers.py",
+    "line": 25,
+    "origin": "written in the CP1 finish work",
+    "verdict": "quotes it as wrong"
+   }
+  ]
+ },
+ "retired_list": [
+  "email F1 0.947 (Review-2 deck)",
+  "SMS F1 0.926 (Review-2 deck)",
+  "URL F1 0.960 (Review-2 deck)",
+  "F1 0.991 (TRAINING_REPORT.md)",
+  "'linear SVM' (TRAINING_REPORT.md)",
+  "'460 campaigns'",
+  "'80.0% -> 84.5%'",
+  "'22 of 60'",
+  "'32 of 60'",
+  "'142 cases'",
+  "'30-minute window'",
+  "'50-minute window'",
+  "quiet-attack demo score 87.8",
+  "quiet-attack demo score 85.6",
+  "voice ROC-AUC 0.952",
+  "'19 routes'"
+ ],
+ "review3": [
+  {
+   "figure": "Email F1, mean of 3 leave-one-corpus-out runs (honest)",
+   "review3": "82.2%",
+   "now": "82.2%",
+   "same": true
+  },
+  {
+   "figure": "Email F1, pooled random split (flattering)",
+   "review3": "98.8%",
+   "now": "98.8%",
+   "same": true
+  },
+  {
+   "figure": "SMS smishing-vs-rest F1 (honest)",
+   "review3": "87.1%",
+   "now": "87.1%",
+   "same": true
+  },
+  {
+   "figure": "SMS smishing-vs-rest F1, 95% CI low",
+   "review3": "82.3%",
+   "now": "82.3%",
+   "same": true
+  },
+  {
+   "figure": "SMS smishing-vs-rest F1, 95% CI high",
+   "review3": "91.7%",
+   "now": "91.7%",
+   "same": true
+  },
+  {
+   "figure": "SMS spam-or-smishing F1 (flattering)",
+   "review3": "98.2%",
+   "now": "98.2%",
+   "same": true
+  },
+  {
+   "figure": "URL F1, host-grouped (honest)",
+   "review3": "90.4%",
+   "now": "90.4%",
+   "same": true
+  },
+  {
+   "figure": "URL false alarms on login URLs of 1,000 held-out popular domains",
+   "review3": "0.0%",
+   "now": "0.0%",
+   "same": true
+  },
+  {
+   "figure": "URL recall on bad URLs on top-10k domains, before the fix",
+   "review3": "49.9%",
+   "now": "49.9%",
+   "same": true
+  },
+  {
+   "figure": "URL recall on bad URLs on top-10k domains, final",
+   "review3": "30.7%",
+   "now": "30.7%",
+   "same": true
+  },
+  {
+   "figure": "URL F1, offline feature benchmark (flattering)",
+   "review3": "95.4%",
+   "now": "95.4%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Single-channel, precision",
+   "review3": "87.0%",
+   "now": "87.0%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Single-channel, recall",
+   "review3": "95.3%",
+   "now": "95.3%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Single-channel, f1",
+   "review3": "91.0%",
+   "now": "91.0%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Single-channel, false positive rate",
+   "review3": "14.1%",
+   "now": "14.1%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Whole-bundle model, precision",
+   "review3": "97.0%",
+   "now": "97.0%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Whole-bundle model, recall",
+   "review3": "92.9%",
+   "now": "92.9%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Whole-bundle model, f1",
+   "review3": "94.9%",
+   "now": "94.9%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Whole-bundle model, false positive rate",
+   "review3": "2.8%",
+   "now": "2.8%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, no window, precision",
+   "review3": "96.8%",
+   "now": "96.8%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, no window, recall",
+   "review3": "93.0%",
+   "now": "93.0%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, no window, f1",
+   "review3": "94.8%",
+   "now": "94.8%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, no window, false positive rate",
+   "review3": "3.0%",
+   "now": "3.0%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, 60-minute window, precision",
+   "review3": "89.4%",
+   "now": "89.4%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, 60-minute window, recall",
+   "review3": "94.9%",
+   "now": "94.9%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, 60-minute window, f1",
+   "review3": "92.0%",
+   "now": "92.0%",
+   "same": true
+  },
+  {
+   "figure": "Correlation (simulated): Engine, 60-minute window, false positive rate",
+   "review3": "11.1%",
+   "now": "11.1%",
+   "same": true
+  },
+  {
+   "figure": "Simulated linked attacks with every event below 0.5 (count)",
+   "review3": "27",
+   "now": "27",
+   "same": true
+  },
+  {
+   "figure": "Simulated linked attacks with every event below 0.5 (share)",
+   "review3": "0.8%",
+   "now": "0.8%",
+   "same": true
+  },
+  {
+   "figure": "Of those, flagged by the 60-minute engine",
+   "review3": "18.5%",
+   "now": "18.5%",
+   "same": true
+  },
+  {
+   "figure": "Simulated linked attack bundles that fit in 60 minutes",
+   "review3": "95.6%",
+   "now": "95.6%",
+   "same": true
+  }
+ ],
+ "open_defects": [
+  {
+   "id": "D-01",
+   "severity": "High",
+   "proposal": "",
+   "failing": [
+    "URL-07"
+   ]
+  },
+  {
+   "id": "D-09",
+   "severity": "High",
+   "proposal": "",
+   "failing": [
+    "SMS-03"
+   ]
+  },
+  {
+   "id": "D-10",
+   "severity": "Medium",
+   "proposal": "",
+   "failing": [
+    "EML-03"
+   ]
+  },
+  {
+   "id": "D-12",
+   "severity": "Medium",
+   "proposal": "Proposed: accept because no case in S-01, S-02 or S-11 can show a lift (each already alerts alone), and the lift is shown instead by TC-06 against TC-07. This stays a hand-written and simulated result until real bundles exist (R2-10).",
+   "failing": [
+    "SYS-14"
+   ]
+  },
+  {
+   "id": "D-16",
+   "severity": "Medium",
+   "proposal": "",
+   "failing": [
+    "SMS-03"
+   ]
+  },
+  {
+   "id": "D-17",
+   "severity": "High",
+   "proposal": "",
+   "failing": [
+    "EML-01",
+    "EML-03"
+   ]
+  },
+  {
+   "id": "D-18",
+   "severity": "Low",
+   "proposal": "Proposed: accept because the alert does not change in S-06, and lowering a lone high score next to benign events is where the model's lower false-alarm rate on simulated bundles comes from. Recheck on real bundles (R2-10).",
+   "failing": [
+    "SCO-08",
+    "UI-03"
+   ]
+  }
+ ]
+}

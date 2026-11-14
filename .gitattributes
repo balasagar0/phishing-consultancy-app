@@ -1,0 +1,6 @@
+# Line endings: LF everywhere, CRLF for Windows batch files, and the pinned engine byte for byte (scripts/sync_engine.py checks its hashes).
+* text=auto eol=lf
+*.bat text eol=crlf
+engine/** -text
+*.joblib binary
+*.png binary
