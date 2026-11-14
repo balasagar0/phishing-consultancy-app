@@ -1,0 +1,5 @@
+# Tests and the browser check (scripts/ui_check.py drives the installed Chrome).
+-r requirements.txt
+pytest==9.2.0
+httpx==0.28.1
+playwright==1.65.2

@@ -1,0 +1,8 @@
+{$MCPD_DOMAIN} {
+	encode gzip
+	header Strict-Transport-Security "max-age=31536000"
+	request_body {
+		max_size 2MB
+	}
+	reverse_proxy app:8765
+}

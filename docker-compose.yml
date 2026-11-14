@@ -1,0 +1,32 @@
+# A single-server install with HTTPS: the app, and Caddy in front of it (it obtains and renews the certificate for MCPD_DOMAIN).
+#   cp .env.example .env    (set MCPD_DOMAIN, and MCPD_SECURE_COOKIES=1)
+#   docker compose up -d --build
+#   docker compose exec app python backend/server/cli.py create-superadmin --email you@firm.example
+# Not run on the build laptop (Docker is not installed there).
+services:
+  app:
+    build: .
+    env_file: .env
+    environment:
+      MCPD_DATA_DIR: /data
+      MCPD_SECURE_COOKIES: "1"
+    volumes:
+      - mcpd-data:/data
+    restart: unless-stopped
+    expose:
+      - "8765"
+  caddy:
+    image: caddy:2.8.4
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on:
+      - app
+    restart: unless-stopped
+volumes:
+  mcpd-data:
+  caddy-data:

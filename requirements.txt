@@ -1,0 +1,14 @@
+# Runtime. The engine packages are pinned to the versions cp1-final was built with: scikit-learn must stay 1.8.0 for the model files.
+# Exact versions of everything, including dependencies: requirements.lock.txt
+scikit-learn==1.8.0
+numpy==2.4.4
+scipy==1.18.1
+pandas==3.0.2
+joblib==1.5.3
+threadpoolctl==3.7.0
+tldextract==5.4.0
+fastapi==0.162.0
+starlette==1.10.0
+pydantic==2.14.2
+uvicorn==0.54.0
+SQLAlchemy==2.1.8
