@@ -25,11 +25,11 @@ From Part 3 of `project/PROJECT_STATUS_AND_ROADMAP.md`. "Built" means code and a
 | Area | Where it stands now | Left to do |
 |---|---|---|
 | Real evaluation data | Not done. No real bundle exists | The team collects 40 coordinated and 40 benign bundles, 150 to refit (R2-10) |
-| Model quality | Not done. The open defects stand (D-01, D-09, D-10, D-16, D-17) | Retrain with real phishing email and real legitimate SMS (CP2) |
+| Model quality | Not done. The open classifier defects stand (D-01, D-09, D-10, D-16, D-17). D-12 and D-18 are open too, each with a written proposal to accept, not an acceptance | Retrain with real phishing email and real legitimate SMS (CP2) |
 | Calibrated risk | Not built | Needs real bundles first |
 | Live message sources | **Built for email and SMS.** IMAP (IDLE or polling), Microsoft 365 (Graph, polling), SMS and email webhooks; links in mail and SMS become URL events | Run against real mailboxes (section 1, step 2). Not built: the Gmail API, Graph push notifications (they need a public HTTPS address), a browser extension for links, an Android reader app. Time from arrival to alert was measured only against a stand-in |
 | Background processing | Not built. Connectors are threads in the server process; requests are scored while they wait | A queue and workers, then a load test |
-| Database | Partly. SQLAlchemy, SQLite in WAL mode; a PostgreSQL address can be configured | Test on PostgreSQL; add migrations (the app adds new tables, but cannot yet change existing ones); a restore drill |
+| Database | Partly. SQLAlchemy, SQLite in WAL mode; a PostgreSQL address can be configured, but no PostgreSQL driver is in `requirements.txt` (`.env.example` says to install `psycopg`) | Test on PostgreSQL; add migrations (the app adds new tables, but cannot yet change existing ones); a restore drill |
 | Client separation | **Built.** Separate event store and HMAC key per organisation, derived from one master key; a test shows no data crosses | Keep the master key in a secrets manager; a key rotation drill |
 | Sign-in and roles | **Built** with passwords, roles and API keys | Single sign-on (OAuth2 or SAML) if a client asks for it |
 | Alert workflow | **Built.** Triage states, assignment, notes, audit log, on-screen pop-ups, desktop notifications, alert webhook | Email notifications are not built. Microsoft Teams was not tested |
@@ -68,7 +68,10 @@ The full list, by owner, is `project/docs/PHASE6_SUMMARY.md`, sections 3 and 4. 
 These are in the frozen CP1 project. Each needs the owner's go-ahead, because changing the project after `cp1-final` changes its history.
 
 - `CHECKLIST_STATUS.md`, row R3-01, points to `docs/BUILT_VS_DESCRIBED.md`. That file does not exist: the 7 Nov decision replaced it with
-  `docs/PATENT_BASIS.md` (C-06). `docs/PHASE6_SUMMARY.md` repeats the pointer, because it is generated from the checklist.
+  `docs/PATENT_BASIS.md` (C-06). `docs/PHASE6_SUMMARY.md` repeats the pointer, because it is generated from the checklist. The name also
+  appears in row PT-04's third column ("Inputs: BUILT_VS_DESCRIBED", copied from the brief) and in `PROJECT_STATUS_AND_ROADMAP.md`, line 80.
+- `CHECKLIST_STATUS.md` says "All six phases done" (line 5 and the closing summary), but its phase table lists seven, Phase 0 to Phase 6,
+  all done.
 - `CHECKLIST_STATUS.md`, "Things found in Phase 0", item 1, says the patent specification is no longer needed, then ends "S should add the
   complete specification to `docs/inputs/`". The last sentence predates the decision.
 - `PROJECT_STATUS_AND_ROADMAP.md` (7 Nov) is out of date (see `README.md` in this folder). Replace it with a pointer to this folder, or update it.

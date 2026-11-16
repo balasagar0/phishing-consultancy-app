@@ -31,8 +31,11 @@ A separate git repository (C-07). The CP1 project was not changed by any of this
 
 ### 2.1 The engine, pinned (commit `e1d2764`, 14 Nov 2026)
 
-- `engine/` is a read-only copy of the CP1 files at `cp1-final`, taken with `git archive` by `scripts/sync_engine.py`, with SHA-256 hashes in
-  `engine/ENGINE_MANIFEST.json`. `sync_engine.py --verify` checks every file (C-08).
+- `engine/` is a read-only copy of 13 CP1 files at `cp1-final` (the code, the four models, `requirements.txt` and `tests/test_demo_cases.py`),
+  taken with `git archive` by `scripts/sync_engine.py`. It also holds `final_numbers.json`, which is not in `cp1-final`: it comes from the
+  project's commit `191e335` (14 Nov 2026) and records that it was written from `cp1-final`. SHA-256 hashes are in
+  `engine/ENGINE_MANIFEST.json`. `sync_engine.py --verify` checks every file against that manifest, and the models against the tag's model
+  manifest; it does not read the tag again (C-08).
 - `tests/test_engine_parity.py` checks that the app scores the eight demo cases exactly as `cp1-final` does, for example TC-06 = 0.595 (C-09).
 
 ### 2.2 Website and web app (commit `ddaa1ee`, 14 Nov 2026)
@@ -61,19 +64,22 @@ Messages arrive by themselves; nobody has to paste them.
   - Each reads a reporting mailbox (staff forward suspicious mail) or watches an inbox (the owner is the recipient).
   - Read-only: the folder is opened with EXAMINE, and nothing is flagged, moved or deleted (C-16). Only new mail is read, and a pause or restart
     skips nothing (C-18).
+  - The stand-alone script `connectors/imap_connector.py` (for a mailbox the server cannot reach) is different: it opens the folder
+    read-write and marks each message it handles as read.
   - Passwords and client secrets are encrypted with AES-256-GCM (`secretbox.py`) and never returned by the API (C-15).
   - Private and local addresses are refused unless the operator allows them (C-25).
 - **Webhooks** (`routes_ingest.py`): `POST /api/v1/hooks/sms` (JSON, a Twilio-style form, HTTP Basic, a report-number mode) and
   `POST /api/v1/hooks/email` (one raw email, up to 10 MB) (C-21).
 - **Live stream**: an in-process event bus (`live.py`) and Server-Sent Events at `/api/live/stream`. Each organisation hears only its own
-  events, and the stream ends when the person signs out (C-22).
+  events, and the stream ends when the person signs out, at its next session check (every 30 s) (C-22).
 - **Live feed** page: one row per message with channel, source, recipient, score and campaign, never the text (C-23). The dashboard, alerts and
   campaigns update by themselves. New alerts pop up on screen, with optional desktop notifications.
-- **Alert webhook** (`hooks_out.py`): a signed JSON notice the moment an alert opens; redirects are not followed (C-24).
+- **Alert webhook** (`hooks_out.py`): a JSON notice the moment an alert opens, signed only when the admin sets a signing secret (it is
+  optional; without one the notice goes unsigned); redirects are not followed (C-24).
 - **Demo replay**: replays the hand-written demo cases with the current time, one every 4 s, for demos. Only the command line can create one
   (C-26). Each run uses fresh made-up recipients (C-27).
 - **Retention**: the daily purge also deletes live-feed rows and the keys of messages already seen (C-30).
-- One new package, `cryptography==50.0.2` (C-31).
+- One new direct dependency, `cryptography==50.0.2`; the lock file also gained its dependencies `cffi` and `pycparser` (C-31).
 
 ### 2.4 Checks run on 14 Nov 2026
 
@@ -81,7 +87,7 @@ Messages arrive by themselves; nobody has to paste them.
 |---|---|---|
 | `pytest tests` in `app/` | 44 passed | C-10 |
 | `scripts/ui_check.py` in the installed Chrome, laptop and phone sizes | 52 of 52 passed, including new messages appearing in an open Live feed and an alert popping up | C-11 |
-| `scripts/sync_engine.py --verify` | every engine file matches `cp1-final` | C-08 |
+| `scripts/sync_engine.py --verify` | every engine file matches its manifest (the numbers file comes from a commit after `cp1-final`, see 2.1) | C-08 |
 | `git status` in `project/` after the app work | clean | C-32 |
 
 ### 2.5 What was not verified

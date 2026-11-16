@@ -19,8 +19,9 @@ Written 17 Nov 2026, at the end of the work on CP1 and on the consultancy app. I
 ## Rules for these files
 
 - No model metric is typed here. Every figure lives in the CP1 project's `reports/` (start with `reports/FINAL_NUMBERS.md`; where it and
-  `reports/results.md` disagree, `results.md` wins). These files say where a figure is, not what it is. Test counts and the demo-case value
-  TC-06 = 0.595 are the only numbers, and CLAIMS.md says how to check each one.
+  `reports/results.md` disagree, `results.md` wins). These files say where a figure is, not what it is. The only scores here are those of
+  the hand-written demo cases (not a test set), such as TC-06 = 0.595. The other numbers are test counts, settings (such as 30 s or 10 MB)
+  and counts of items, cases or bundles. None is a model metric. CLAIMS.md says how to check the test counts and TC-06.
 - "Not built" means not built. "Tested" says against what: several app features were tested only against stand-ins on this laptop.
 - The documents listed as wrong in the project's `CLAUDE.md` (the study guide, the old numbers register, the Review-2 and Review-3 packs,
   the old manuscript and training report) were not used.
