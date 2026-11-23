@@ -1,5 +1,5 @@
 """Work shared by the signed-in routes and the API-key routes: request shapes, recording events with their alert cases, and the retention purge."""
-import hashlib, hmac, json, time
+import hashlib, hmac, json, math, time
 from collections import Counter
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import delete, select
@@ -7,6 +7,13 @@ from . import db as M, engine
 from .deps import Ctx
 
 MAX_TEXT = 100_000
+MAX_TIME_MINUTES = 1e9                 # about 1,900 years from 1970. A larger number is not a time, and it overflows when converted or subtracted
+
+
+def whole_unicode(v):
+    """JSON can carry half of a Unicode character, which cannot be stored, hashed or sent back. It is replaced, so the message is still scored
+    and a crafted message cannot avoid detection by making the request fail."""
+    return v.encode("utf-8", "replace").decode("utf-8") if isinstance(v, str) else v
 
 
 class EventIn(BaseModel):
@@ -16,9 +23,17 @@ class EventIn(BaseModel):
     identity: str | None = Field(default="", max_length=320)
     time: str | float | int | None = None
 
+    _whole = field_validator("channel", "text", "subject", "identity", mode="before")(whole_unicode)
+
     @field_validator("time")
     @classmethod
-    def _t(cls, v): return None if v in (None, "") else str(v)[:40]
+    def _t(cls, v):
+        if v in (None, ""): return None
+        s = whole_unicode(str(v))[:40]
+        try: x = float(s)
+        except ValueError: return s                 # an ISO timestamp: the engine checks it
+        if math.isfinite(x) and abs(x) > MAX_TIME_MINUTES: raise ValueError("'time' is out of range")
+        return s
 
     def engine_dict(self): return {"channel": self.channel.lower(), "text": self.text, "subject": self.subject or "", "identity": self.identity or "", "time": self.time}
 
@@ -27,6 +42,8 @@ class ScanIn(BaseModel):
     channel: str = Field(min_length=1, max_length=20)
     text: str = Field(min_length=1, max_length=MAX_TEXT)
     subject: str | None = Field(default="", max_length=2000)
+
+    _whole = field_validator("channel", "text", "subject", mode="before")(whole_unicode)
 
 
 class CorrelateIn(BaseModel):
@@ -37,6 +54,8 @@ class CorrelateIn(BaseModel):
 class EventsIn(BaseModel):
     recipient: str = Field(min_length=1, max_length=320)
     events: list[EventIn] = Field(min_length=1, max_length=20)
+
+    _whole = field_validator("recipient", mode="before")(whole_unicode)
 
 
 def log_scan(db, ctx, kind, channel="", n=1, score=None, alert=None):
@@ -54,7 +73,7 @@ def _hide(tokens, keep):
 
 
 def message_out(m: M.MessageLog) -> dict:
-    return {"id": m.id, "at": m.at, "received_at": m.received_at, "channel": m.channel, "source": m.source, "origin": m.origin,
+    return {"id": m.id, "at": m.at if math.isfinite(m.at) else m.received_at, "received_at": m.received_at, "channel": m.channel, "source": m.source, "origin": m.origin,
             "recipient": m.recipient_label or f"recipient {m.recipient_ref}", "score": None if m.score is None else round(m.score, 3), "label": m.label,
             "assessed": m.assessed, "campaign_id": m.campaign_id, "campaign_risk": None if m.campaign_risk is None else round(m.campaign_risk, 3),
             "indicators": json.loads(m.indicators or "[]")}

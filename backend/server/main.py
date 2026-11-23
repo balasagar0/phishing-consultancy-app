@@ -4,7 +4,7 @@ scheduled retention purge.
 (--timeout-graceful-shutdown: open live streams would otherwise keep the server waiting when it is stopped.)"""
 import logging, threading
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy import select
 from starlette.datastructures import MutableHeaders
@@ -54,8 +54,18 @@ class Guard:
         path = scope.get("path", "")
         try: size = int(dict(scope["headers"]).get(b"content-length") or 0)
         except ValueError: size = 0
-        if size > (MAX_EMAIL if path == "/api/v1/hooks/email" else MAX_BODY):
+        limit = MAX_EMAIL if path == "/api/v1/hooks/email" else MAX_BODY
+        if size > limit:
             return await JSONResponse({"detail": "request too large"}, status_code=413, headers=SECURITY_HEADERS)(scope, receive, send)
+        seen = 0
+
+        async def receive_within_limit():              # a chunked request has no Content-Length, so the bytes are counted as they arrive
+            nonlocal seen
+            msg = await receive()
+            if msg["type"] == "http.request":
+                seen += len(msg.get("body", b""))
+                if seen > limit: raise HTTPException(413, "request too large")
+            return msg
 
         async def send_with_headers(msg):
             if msg["type"] == "http.response.start":
@@ -64,7 +74,7 @@ class Guard:
                     if k not in h: h[k] = v
                 if path.startswith("/api"): h["Cache-Control"] = "no-store"
             await send(msg)
-        await self.app(scope, receive, send_with_headers)
+        await self.app(scope, receive_within_limit, send_with_headers)
 
 
 def create_app() -> FastAPI:
